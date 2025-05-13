@@ -1,0 +1,14 @@
+@font-face {
+  font-family: "Titulo"; /* Nombre de la fuente */
+  src: url("../fuentes/Drawliner.ttf") format("truetype"); /* Ruta a la fuente*/
+}
+
+
+body,
+html {
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+

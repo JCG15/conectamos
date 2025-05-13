@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Conectamos</title>
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- Font Awesome para iconos -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="icon" type="image/png" href="./imagenes/cabezapipo.png" />
+  </head>
+  <body>
+    <div class="contenedor">
+      <img
+        src="./imagenes/fondoinicio.jpg"
+        alt="Fondo"
+        class="fondo img-fluid"
+      />
+      <img src="./imagenes/pipo.png" alt="Pipo" class="pipo img-fluid" />
+      <img src="./imagenes/navepipo.png" alt="Nave" class="nave img-fluid" />
+      <h1 class="titulo">Conectamos</h1>
+      <p class="subtitulo">La plataforma que une ideas y personas</p>
+
+      <!-- Modal de Bootstrap mejorado -->
+      <div
+        class="modal fade"
+        id="nombreModal"
+        tabindex="-1"
+        aria-labelledby="nombreModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="nombreModalLabel">
+                <i class="fas fa-user-astronaut me-2"></i>¡Bienvenido a
+                Conectamos!
+              </h5>
+              <button
+                type="button"
+                class="btn-close btn-close-white"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body">
+              <p class="mb-4">
+                Por favor ingresa tu nombre para comenzar esta aventura:
+              </p>
+              <input
+                type="text"
+                id="nombreUsuario"
+                class="form-control form-control-lg"
+                placeholder="Ej: Pipo"
+              />
+              <div class="mt-3 text-muted small">
+                <i class="fas fa-info-circle me-1"></i> Usaremos este nombre
+                para personalizar tu experiencia.
+              </div>
+            </div>
+            <div class="modal-footer justify-content-center">
+              <button
+                type="button"
+                class="btn btn-primary px-4"
+                onclick="redirigir()"
+              >
+                <i class="fas fa-rocket me-2"></i>Iniciar Viaje
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <button
+        class="entrar"
+        id="botonEntrar"
+        data-bs-toggle="modal"
+        data-bs-target="#nombreModal"
+      >
+        <i class="fas fa-door-open me-2"></i>ENTRAR
+      </button>
+    </div>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="./js/bootstrap.bundle.min.js"></script>
+    <script>
+      // Función para redirigir después de ingresar el nombre
+      function redirigir() {
+        const nombre = document.getElementById("nombreUsuario").value.trim();
+        const modal = bootstrap.Modal.getInstance(
+          document.getElementById("nombreModal")
+        );
+
+        if (nombre === "") {
+          // Mostrar error si el campo está vacío
+          document.getElementById("nombreUsuario").classList.add("is-invalid");
+          document.getElementById(
+            "nombreUsuario"
+          ).nextElementSibling.textContent = "Por favor ingresa tu nombre";
+          return;
+        }
+
+        // Aquí iría la lógica de redirección
+        console.log(`Bienvenido ${nombre}! Redirigiendo...`);
+
+        // Cerrar el modal
+        modal.hide();
+
+        // Mostrar mensaje de bienvenida (simulando redirección)
+        alert(`¡Bienvenido ${nombre}! Prepárate para la aventura.`);
+
+        // En un caso real, aquí redirigirías a la siguiente página
+        // window.location.href = `bienvenida.html?nombre=${encodeURIComponent(nombre)}`;
+      }
+
+      // Validación en tiempo real
+      document
+        .getElementById("nombreUsuario")
+        .addEventListener("input", function () {
+          if (this.value.trim() !== "") {
+            this.classList.remove("is-invalid");
+          }
+        });
+
+      // Inicializar el modal correctamente
+      document.addEventListener("DOMContentLoaded", function () {
+        var myModal = new bootstrap.Modal(
+          document.getElementById("nombreModal")
+        );
+
+        // Mostrar el modal al hacer clic en ENTRAR
+        document
+          .getElementById("botonEntrar")
+          .addEventListener("click", function () {
+            myModal.show();
+          });
+
+        // Limpiar el campo al mostrar el modal
+        document
+          .getElementById("nombreModal")
+          .addEventListener("show.bs.modal", function () {
+            document.getElementById("nombreUsuario").value = "";
+            document.getElementById("nombreUsuario").focus();
+          });
+      });
+
+      // Efecto de partículas opcional
+      function crearParticulas() {
+        const contenedor = document.querySelector(".contenedor");
+        for (let i = 0; i < 50; i++) {
+          const particula = document.createElement("div");
+          particula.classList.add("particula");
+
+          // Tamaño aleatorio entre 1 y 3px
+          const size = Math.random() * 2 + 1;
+          particula.style.width = `${size}px`;
+          particula.style.height = `${size}px`;
+
+          // Posición aleatoria
+          particula.style.left = `${Math.random() * 100}%`;
+          particula.style.top = `${Math.random() * 100}%`;
+
+          // Opacidad aleatoria
+          particula.style.opacity = Math.random() * 0.5 + 0.1;
+
+          // Animación
+          particula.style.animation = `movimiento ${
+            Math.random() * 10 + 5
+          }s linear infinite`;
+
+          contenedor.appendChild(particula);
+        }
+      }
+
+      // Llamar a la función si se desea el efecto
+       crearParticulas();
+    </script>
+  </body>
+</html>

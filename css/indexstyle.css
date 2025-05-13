@@ -1,0 +1,238 @@
+:root {
+  --color-primario: #3252bc;
+  --color-secundario: #3252bc;
+  --color-acento: #0b68c5;
+  --color-texto: #ecf0f1;
+}
+.contenedor {
+  position: relative;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+  background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+}
+
+.fondo {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 1;
+  opacity: 0.7;
+}
+
+.pipo {
+  position: absolute;
+  width: 8%;
+  max-width: 150px;
+  bottom: 35%;
+  left: 15%;
+  z-index: 3;
+  transition: transform 0.5s ease;
+}
+
+.pipo:hover {
+  transform: scale(1.05) rotate(-5deg);
+}
+
+.nave {
+  position: absolute;
+  width: 20%;
+  max-width: 200px;
+  top: 15%;
+  right: 15%;
+  z-index: 2;
+  animation: flotar 3s ease-in-out infinite alternate;
+}
+
+@keyframes flotar {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-20px);
+  }
+}
+
+.titulo {
+  position: absolute;
+  top: 30%;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-family: "Titulo";
+  color: var(--color-texto);
+  font-size: 4rem;
+  font-weight: 700;
+  text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.5);
+  z-index: 3;
+  letter-spacing: 2px;
+}
+
+.subtitulo {
+  position: absolute;
+  top: calc(30% + 5rem);
+  left: 0;
+  right: 0;
+  text-align: center;
+  color: var(--color-texto);
+  font-size: 1.5rem;
+  opacity: 0.9;
+  z-index: 3;
+}
+
+.entrar {
+  position: absolute;
+  bottom: 40%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: transparent;
+  color: white;
+  padding: 15px 40px;
+  font-family: "Titulo";
+  text-align: center;
+  text-decoration: none;
+  font-size: 1.2rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  border-radius: 50px;
+  z-index: 4;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.entrar:hover {
+  background-color: #072999;
+  transform: translateX(-50%) scale(1.05);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Estilos personalizados para el modal */
+.modal-content {
+  border-radius: 15px;
+  border: none;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+}
+
+.modal-header {
+  background-color: var(--color-primario);
+  color: white;
+  border-bottom: none;
+  padding: 20px;
+}
+
+.modal-body {
+  padding: 30px;
+}
+
+.modal-footer {
+  border-top: none;
+  padding: 20px;
+  background-color: #f8f9fa;
+}
+
+.form-control {
+  padding: 12px 15px;
+  border-radius: 8px;
+  border: 2px solid #ddd;
+  transition: all 0.3s;
+}
+
+.form-control:focus {
+  border-color: var(--color-secundario);
+  box-shadow: 0 0 0 0.25rem rgba(52, 152, 219, 0.25);
+}
+
+.btn-primary {
+  background-color: var(--color-secundario);
+  border: none;
+  padding: 10px 25px;
+  border-radius: 50px;
+  font-weight: 600;
+  transition: all 0.3s;
+}
+
+.btn-primary:hover {
+  background-color: #072999;
+  transform: translateY(-2px);
+}
+
+/* Efectos de partículas (opcional) */
+.particula {
+  position: absolute;
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 50%;
+  z-index: 0;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+  .titulo {
+    font-size: 3rem;
+  }
+
+  .subtitulo {
+    font-size: 1.2rem;
+  }
+
+  .pipo {
+    width: 15%;
+    bottom: 8%;
+  }
+
+  .nave {
+    right: 5%;
+  }
+}
+
+@media (max-width: 768px) {
+  .titulo {
+    font-size: 2.5rem;
+    top: 30%;
+  }
+
+  .subtitulo {
+    font-size: 1rem;
+    top: calc(30% + 3rem);
+  }
+
+  .pipo {
+    width: 18%;
+    left: 5%;
+    bottom: 5%;
+  }
+
+  .nave {
+    width: 25%;
+    right: 5%;
+  }
+
+  .entrar {
+    bottom: 48%;
+    padding: 12px 30px;
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .titulo {
+    font-size: 2rem;
+  }
+
+  .pipo {
+    width: 20%;
+  }
+
+  .nave {
+    width: 30%;
+    top: 10%;
+  }
+
+  .entrar {
+    bottom: 48%;
+    width: 80%;
+    max-width: 250px;
+  }
+}
