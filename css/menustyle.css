@@ -226,7 +226,7 @@
   }
 
   .panel-control {
-    bottom: 10%;
+    bottom: 30%;
     gap: 20px;
   }
 
@@ -248,7 +248,7 @@
   }
 
   .panel-control {
-    bottom: 8%;
+    bottom: 35%;
     gap: 15px;
     width: 90%;
   }
