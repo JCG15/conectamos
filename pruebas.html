@@ -105,7 +105,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(255, 255, 255, 0.3);
+            background-color: rgba(0, 0, 0, 0.5);
             opacity: 0;
             transition: opacity 0.2s;
         }
@@ -146,7 +146,6 @@
         
         .controles-juego {
             display: flex;
-            flex-direction: column;
             align-items: center;
             width: 100%;
             margin-top: 20px;
@@ -163,7 +162,7 @@
             cursor: pointer;
             transition: all 0.3s;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-            margin: 10px 0;
+            margin: 10px;
             width: 100%;
             max-width: 200px;
             display: flex;
@@ -258,8 +257,7 @@
 </head>
 <body>
     <div class="contenedor-juego">
-        <img src="./imagenes/fondo-nave.jpg" alt="Fondo espacial" class="fondo-juego img-fluid">
-        <h1 class="titulo-juego">Simón Dice Espacial</h1>
+        <h1 class="titulo-juego">Memoria Espacial</h1>
         
         <div class="panel-juego">
             <div class="info-juego">
@@ -300,7 +298,7 @@
         let nivelActual = 1;
         let puntos = 0;
         let record = localStorage.getItem('simonRecord') || 0;
-        let jugadorActual = localStorage.getItem('jugadorActual') || 'Jugador';
+        let jugadorActual = localStorage.getItem('nombre') || '';
         let jugando = false;
         let indiceSecuencia = 0;
         let esperandoInput = false;

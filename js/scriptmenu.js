@@ -10,13 +10,13 @@
             }
             
             // Simulación de juego - en una implementación real aquí iría la lógica del juego
-            const puntosGanados = Math.floor(Math.random() * 100) + 1;
+            //const puntosGanados = Math.floor(Math.random() * 100) + 1;
             
             // Actualizar puntuación del jugador
             actualizarPuntuacion(jugadorActual, puntosGanados);
             
             // Mostrar resultado
-            alert(`¡${jugadorActual} ha ganado ${puntosGanados} puntos en ${juego}!`);
+            //alert(`¡${jugadorActual} ha ganado ${puntosGanados} puntos en ${juego}!`);
             
             // Cerrar el modal
             const modal = bootstrap.Modal.getInstance(document.getElementById('modalMinijuegos'));
