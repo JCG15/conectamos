@@ -117,7 +117,7 @@
             if (!jugadorActual) {
                 // Redirigir a la página principal si no hay nombre
                 alert('Por favor, ingresa tu nombre en la página principal primero.');
-                window.location.href = 'index.html'; // Cambia esto por tu página de inicio
+                window.location.href = 'index.html';
                 return;
             }
             
