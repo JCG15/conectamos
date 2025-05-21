@@ -38,17 +38,15 @@
                     </div>
                     <div class="modal-body">
                         <div class="juegos-container">
-                            <div class="juego-card" onclick="iniciarJuego('memoria')">
-                                <a href="pruebas.html">
+                            <div class="juego-card" id="simondice" onclick="iniciarJuego('memoria')">
                                 <img src="./imagenes/simondice.jpeg" alt="Juego de Memoria" class="juego-img">
                                 <div class="juego-info">
                                     <h4 class="juego-titulo">Memoria Espacial</h4>
                                     <p class="juego-desc">Sigue el orden de las luces</p>
                                 </div>
-                                </a>
                             </div>
                             
-                            <div class="juego-card" onclick="iniciarJuego('estrellas')">
+                            <div class="juego-card" id="estrellas" onclick="iniciarJuego('estrellas')">
                                 <img src="./imagenes/parejas.png" alt="Juego de parejas" class="juego-img">
                                 <div class="juego-info">
                                     <h4 class="juego-titulo">Estrellas perdidas</h4>
@@ -112,7 +110,6 @@
             </div>
         </div>
     </div>
-
     <!-- Bootstrap JS Bundle with Popper -->
     <script src="./js/bootstrap.bundle.min.js"></script>
     <script src="./js/scriptmenu.js"></script>
