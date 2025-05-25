@@ -5,16 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Memoria de Estrellas</title>
     <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="./css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome para iconos -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" type="image/png" href="./imagenes/cabezapipo.png" />
     <style>
         :root {
             --color-primario: #1a1a2e;
             --color-secundario: #4cc9f0;
             --color-acento: #0b68c5;
             --color-texto: #e2e2e2;
-            --color-fondo-nave: #16213e;
+            --color-fondo: #0a0a1a;
         }
         
         body, html {
@@ -26,6 +27,21 @@
             overflow-x: hidden;
         }
         
+        body::-webkit-scrollbar {
+        width: 12px;               /* width of the entire scrollbar */
+        }
+
+        body::-webkit-scrollbar-track {
+        background:  --color-primario;        /* color of the tracking area */
+        }
+
+        body::-webkit-scrollbar-thumb {
+        background-color:  --color-primario;    /* color of the scroll thumb */
+        border-radius: 20px;       /* roundness of the scroll thumb */
+        border: 3px solid  #4cc9f0;  /* creates padding around scroll thumb */
+        }
+
+
         /* Fondo estelar animado */
         .fondo-estelar {
             position: fixed;
@@ -45,9 +61,10 @@
             animation: brillar 2s infinite alternate;
         }
         
-        @keyframes brillar {
-            from { opacity: 0.3; }
-            to { opacity: 1; }
+          @keyframes brillar {
+            0% { opacity: 0.2; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(1.1); }
+            100% { opacity: 0.3; transform: scale(1); }
         }
         
         .contenedor-juego {
@@ -66,7 +83,7 @@
             margin-bottom: 30px;
             text-align: center;
             color: var(--color-secundario);
-            text-shadow: 0 0 10px rgba(76, 201, 240, 0.5);
+            text-shadow: 0 0 10px rgba(76, 201, 240, 0.7);
         }
         
         .tablero-memoria {
@@ -79,22 +96,22 @@
             background-color: rgba(26, 26, 46, 0.7);
             padding: 20px;
             border-radius: 15px;
-            box-shadow: 0 0 20px rgba(11, 104, 197, 0.3);
+            box-shadow: 0 0 30px rgba(11, 104, 197, 0.3);
             border: 1px solid var(--color-secundario);
         }
         
         .carta {
             aspect-ratio: 1/1;
-            background-color: var(--color-primario);
+            background-color: linear-gradient(145deg, #2a2a4a, #1a1a2e);
             border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             position: relative;
             transform-style: preserve-3d;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
         }
         
         .carta .cara {
@@ -117,7 +134,7 @@
         .carta .frente {
             background-color: var(--color-primario);
             transform: rotateY(180deg);
-            font-size: 2rem;
+            font-size: 2.2rem;
         }
         
         .carta.volteada .trasera {
@@ -131,7 +148,8 @@
         .carta.encontrada {
             cursor: default;
             transform: scale(0.95);
-            box-shadow: 0 0 15px var(--color-secundario);
+            box-shadow: 0 0 20px var(--color-secundario);
+            filter: brightness(1.1);
         }
         
         .info-juego {
@@ -154,9 +172,9 @@
         }
         
         .btn-juego {
-            background-color: var(--color-acento);
+             background: linear-gradient(135deg, var(--color-acento), var(--color-secundario));
             color: white;
-            padding: 10px 20px;
+            padding: 12px 25px;
             border: none;
             border-radius: 50px;
             font-size: 1rem;
@@ -165,14 +183,13 @@
             transition: all 0.3s;
             display: flex;
             align-items: center;
-            gap: 8px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            gap: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
         }
         
         .btn-juego:hover {
-            background-color: var(--color-secundario);
             transform: translateY(-3px);
-            box-shadow: 0 6px 15px rgba(76, 201, 240, 0.4);
+            box-shadow: 0 8px 20px rgba(76, 201, 240, 0.5);
         }
         
         /* Colores para las estrellas */
@@ -185,6 +202,24 @@
         .estrella-rosa { color: #e91e63; text-shadow: 0 0 10px #e91e63; }
         .estrella-turquesa { color: #00bcd4; text-shadow: 0 0 10px #00bcd4; }
         
+
+        /* Efecto de partículas al encontrar pareja */
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: var(--color-secundario);
+            opacity: 0;
+            z-index: 10;
+            animation: confetti-fall 2s ease-out forwards;
+        }
+
+        @keyframes confetti-fall {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-300px) rotate(360deg); opacity: 0; }
+        }
+
+
         @media (max-width: 576px) {
             .tablero-memoria {
                 gap: 10px;
@@ -211,7 +246,7 @@
     <div class="fondo-estelar" id="fondoEstelar"></div>
     
     <div class="contenedor-juego">
-        <h1 class="titulo-juego">Memoria de Estrellas</h1>
+        <h1 class="titulo-juego">Estrellas perdidas</h1>
         
         <div class="info-juego">
             <div>Parejas: <span id="parejas-encontradas">0</span>/8</div>
@@ -233,14 +268,15 @@
     </div>
 
     <!-- Bootstrap JS Bundle with Popper -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="./js/bootstrap.bundle.min.js"></script>
     <script>
         // Variables del juego
         let cartasVolteadas = [];
         let parejasEncontradas = 0;
         let movimientos = 0;
         let bloqueo = false;
-        let jugadorActual = localStorage.getItem('jugadorActual') || 'Jugador';
+        let jugadorActual = localStorage.getItem("jugadorActual") || "Jugador";
+        let juegoCompletado = false;
         
         // Colores disponibles para las estrellas (8 parejas)
         const coloresEstrellas = [
@@ -273,6 +309,30 @@
                 
                 fondo.appendChild(estrella);
             }
+        }
+
+        // Crear efecto de confeti
+        function crearConfetti(x, y, color) {
+            for (let i = 0; i < 7; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = `${x}px`;
+                confetti.style.top = `${y}px`;
+                confetti.style.backgroundColor = color || getRandomColor();
+                confetti.style.animationDelay = `${i * 0.1}s`;
+                
+                document.body.appendChild(confetti);
+                
+                // Eliminar después de la animación
+                setTimeout(() => {
+                    confetti.remove();
+                }, 1000);
+            }
+        }
+        
+        function getRandomColor() {
+            const colors = ['#ff3e3e', '#2196f3', '#4caf50', '#ffeb3b', '#9c27b0', '#ff9800'];
+            return colors[Math.floor(Math.random() * colors.length)];
         }
         
         // Inicializar el juego
@@ -356,6 +416,12 @@
                 carta1.classList.add('encontrada');
                 carta2.classList.add('encontrada');
                 parejasEncontradas++;
+
+                // Confetti
+                const rect1 = carta1.getBoundingClientRect();
+                const rect2 = carta2.getBoundingClientRect();
+                crearConfetti(rect1.left + rect1.width/2.3, rect1.top + rect1.height/1.8, getComputedStyle(carta1.querySelector('.frente i')).color);
+                crearConfetti(rect2.left + rect2.width/2.3, rect2.top + rect2.height/1.8, getComputedStyle(carta2.querySelector('.frente i')).color);
                 
                 // Verificar si el juego ha terminado
                 if (parejasEncontradas === coloresEstrellas.length) {
@@ -385,6 +451,7 @@
             document.getElementById('movimientos').textContent = movimientos;
         }
         
+        
         // Finalizar el juego
         function finalizarJuego() {
             // Calcular puntos (menos movimientos = más puntos)
@@ -392,11 +459,25 @@
             
             // Guardar puntos para mostrar en el menú principal
             if (puntos > 0) {
-                localStorage.setItem('ultimoJuego', JSON.stringify({
-                    juego: 'memoria-estrellas',
-                    puntos: puntos,
-                    timestamp: Date.now()
-                }));
+                const puntosGanados = parseInt(localStorage.getItem("puntosTemporales")) || puntos;
+                let jugadores = JSON.parse(localStorage.getItem("jugadores")) || [];
+                const jugadorIndex = jugadores.findIndex(
+                (j) => j.nombre === jugadorActual
+                );
+
+                if (jugadorIndex !== -1) {
+                jugadores[jugadorIndex].puntos += puntosGanados;
+                } else {
+                jugadores.push({
+                    nombre: jugadorActual,
+                    puntos: puntosGanados,
+                    nivel: 1,
+                });
+                }
+
+                localStorage.setItem("jugadores", JSON.stringify(jugadores));
+                localStorage.removeItem("puntosTemporales"); // Limpiar después de usar
+                localStorage.removeItem("juegoOrigen");
             }
             
             // Mostrar mensaje de felicitación
@@ -433,13 +514,17 @@
             });
         }
         
+
+
         // Volver al menú principal
         function volverAlMenu() {
             if (parejasEncontradas > 0 || movimientos > 0) {
                 if (!confirm('¿Estás seguro de que quieres salir? Perderás tu progreso.')) {
+                     // Guardar puntuación antes de salir
                     return;
                 }
             }
+
             window.location.href = 'eleccionminijuego.html';
         }
         

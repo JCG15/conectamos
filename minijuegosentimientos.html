@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emociones Espaciales</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --color-primario: #1a1a2e;
+            --color-secundario: #4cc9f0;
+            --color-acento: #0b68c5;
+            --color-texto: #e2e2e2;
+            --color-fondo: #0a0a1a;
+            --color-correcto: #4CAF50;
+            --color-incorrecto: #F44336;
+        }
+
+        body, html {
+            height: 100%;
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--color-texto);
+            overflow: hidden;
+        }
+
+        /* Fondo estelar animado */
+        .fondo-estelar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: linear-gradient(to bottom, #020111 0%, #0a0a1a 100%);
+            overflow: hidden;
+        }
+
+        .estrella-fondo {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: brillar 3s infinite alternate;
+        }
+
+        @keyframes brillar {
+            0% { opacity: 0.2; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(1.1); }
+            100% { opacity: 0.3; transform: scale(1); }
+        }
+
+        .contenedor-juego {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .titulo-juego {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            text-align: center;
+            color: var(--color-secundario);
+            text-shadow: 0 0 15px rgba(76, 201, 240, 0.7);
+        }
+
+        .panel-juego {
+            background-color: rgba(26, 26, 46, 0.7);
+            border-radius: 15px;
+            padding: 30px;
+            width: 100%;
+            max-width: 600px;
+            box-shadow: 0 0 30px rgba(11, 104, 197, 0.4);
+            border: 1px solid var(--color-secundario);
+            margin-bottom: 20px;
+        }
+
+        .astronauta-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        .astronauta {
+            width: 200px;
+            height: 200px;
+            background-color: #2a2a4a;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(76, 201, 240, 0.3);
+            position: relative;
+        }
+
+        .astronauta-cara {
+            font-size: 5rem;
+            transition: all 0.5s ease;
+        }
+
+        .opciones-emociones {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .btn-emocion {
+            background: linear-gradient(135deg, var(--color-primario), #2a2a4a);
+            border: 2px solid var(--color-secundario);
+            color: var(--color-texto);
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn-emocion:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(76, 201, 240, 0.3);
+        }
+
+        .btn-emocion i {
+            font-size: 1.5rem;
+        }
+
+        .info-juego {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 600px;
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+            background-color: rgba(26, 26, 46, 0.7);
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(11, 104, 197, 0.2);
+        }
+
+        .controles-juego {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .btn-juego {
+            background: linear-gradient(135deg, var(--color-acento), var(--color-secundario));
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn-juego:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(76, 201, 240, 0.5);
+        }
+
+        .nivel-indicador {
+            width: 100%;
+            height: 10px;
+            background-color: rgba(76, 201, 240, 0.2);
+            border-radius: 5px;
+            margin-top: 15px;
+            overflow: hidden;
+        }
+
+        .nivel-progreso {
+            height: 100%;
+            background: linear-gradient(90deg, var(--color-secundario), var(--color-acento));
+            width: 0%;
+            transition: width 0.5s;
+        }
+
+        /* Animaciones */
+        @keyframes acierto {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes error {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            50% { transform: translateX(10px); }
+            75% { transform: translateX(-10px); }
+            100% { transform: translateX(0); }
+        }
+
+        .acierto {
+            animation: acierto 0.5s;
+            color: var(--color-correcto);
+        }
+
+        .error {
+            animation: error 0.5s;
+            color: var(--color-incorrecto);
+        }
+
+        @media (max-width: 768px) {
+            .opciones-emociones {
+                grid-template-columns: 1fr;
+            }
+            
+            .astronauta {
+                width: 150px;
+                height: 150px;
+            }
+            
+            .astronauta-cara {
+                font-size: 4rem;
+            }
+            
+            .btn-emocion {
+                padding: 12px;
+                font-size: 1rem;
+            }
+        }
+
+        /* Nuevos estilos para el modal personalizado */
+        .modal-espacial .modal-content {
+            background: linear-gradient(135deg, #1a1a2e, #2a2a4a);
+            color: white;
+            border: 2px solid var(--color-secundario);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 0 30px rgba(76, 201, 240, 0.5);
+        }
+
+        .modal-espacial .modal-header {
+            border-bottom: 1px solid var(--color-secundario);
+            background: rgba(11, 104, 197, 0.2);
+            padding: 20px;
+        }
+
+        .modal-espacial .modal-title {
+            color: var(--color-secundario);
+            font-size: 1.8rem;
+            text-align: center;
+            width: 100%;
+        }
+
+        .modal-espacial .modal-body {
+            padding: 30px;
+            text-align: center;
+        }
+
+        .modal-espacial .emoji-resultado {
+            font-size: 5rem;
+            margin: 20px 0;
+            animation: latido 1.5s infinite;
+        }
+
+        @keyframes latido {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .modal-espacial .puntos-ganados {
+            font-size: 2rem;
+            color: var(--color-secundario);
+            margin: 15px 0;
+            font-weight: bold;
+        }
+
+        .modal-espacial .detalles-resultado {
+            background: rgba(76, 201, 240, 0.1);
+            border-radius: 10px;
+            padding: 15px;
+            margin: 20px 0;
+        }
+
+        .modal-espacial .modal-footer {
+            border-top: 1px solid var(--color-secundario);
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            padding: 20px;
+        }
+
+        .modal-espacial .btn-modal {
+            min-width: 120px;
+            border: none;
+            border-radius: 50px;
+            padding: 10px 20px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .modal-espacial .btn-continuar {
+            background: linear-gradient(135deg, var(--color-secundario), var(--color-acento));
+            color: white;
+        }
+
+        .modal-espacial .btn-volver {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--color-texto);
+            border: 1px solid var(--color-secundario);
+        }
+
+        .modal-espacial .btn-modal:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(76, 201, 240, 0.4);
+        }
+
+        /* Efecto de constelación */
+        .efecto-constelacion {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: -1;
+            opacity: 0.3;
+        }
+
+        .estrella-efecto {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: brillar-rapido 1s infinite alternate;
+        }
+
+        @keyframes brillar-rapido {
+            0% { opacity: 0.2; transform: scale(0.8); }
+            100% { opacity: 0.8; transform: scale(1.2); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Fondo estelar -->
+    <div class="fondo-estelar" id="fondoEstelar"></div>
+    
+    <div class="contenedor-juego">
+        <h1 class="titulo-juego">Quiz Cósmico</h1>
+        
+        <div class="info-juego">
+            <div>Nivel: <span id="nivel-actual">1</span></div>
+            <div>Aciertos: <span id="aciertos">0</span>/<span id="total-preguntas">5</span></div>
+            <div>Puntos: <span id="puntos-acumulados">0</span></div>
+        </div>
+        
+        <div class="panel-juego">
+            <div class="astronauta-container">
+                <div class="astronauta">
+                    <div class="astronauta-cara" id="emocion-actual"></div>
+                </div>
+            </div>
+            
+            <div class="opciones-emociones" id="opciones-emociones">
+                <!-- Opciones generadas por JavaScript -->
+            </div>
+            
+            <div class="nivel-indicador">
+                <div class="nivel-progreso" id="nivel-progreso"></div>
+            </div>
+        </div>
+        
+        <div class="controles-juego">
+            <button class="btn-juego" id="btn-volver">
+                <i class="fas fa-arrow-left"></i> Volver
+            </button>
+        </div>
+    </div>
+
+    <script src="./js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Sistema de puntuación estandarizado
+       const SistemaPuntuacion = {
+            guardarResultado: function(puntos, juego) {
+                const resultado = {
+                    juego: juego,
+                    puntos: puntos,
+                    timestamp: Date.now(),
+                    jugador: localStorage.getItem('jugadorActual') || 'Jugador'
+                };
+                localStorage.setItem('ultimoJuego', JSON.stringify(resultado));
+            },
+            
+            obtenerUltimoResultado: function() {
+                const resultado = localStorage.getItem('ultimoJuego');
+                return resultado ? JSON.parse(resultado) : null;
+            },
+            
+            limpiarResultado: function() {
+                localStorage.removeItem('ultimoJuego');
+            }
+        };
+
+        // Emociones disponibles
+        const emociones = [
+            { nombre: "Feliz", icono: "fa-smile", codigo: "😊" },
+            { nombre: "Triste", icono: "fa-sad-tear", codigo: "😢" },
+            { nombre: "Enfadado", icono: "fa-angry", codigo: "😠" },
+            { nombre: "Sorprendido", icono: "fa-surprise", codigo: "😲" }
+        ];
+
+        // Variables del juego
+        let nivelActual = 1;
+        let aciertos = 0;
+        let preguntasTotales = 5;
+        let preguntasRespondidas = 0;
+        let puntosAcumulados = 0;
+        let emocionCorrecta = null;
+        let jugadorActual = localStorage.getItem('jugadorActual') || 'Jugador';
+
+        // Elementos del DOM
+        const emocionActualElement = document.getElementById('emocion-actual');
+        const opcionesEmocionesElement = document.getElementById('opciones-emociones');
+        const nivelActualElement = document.getElementById('nivel-actual');
+        const aciertosElement = document.getElementById('aciertos');
+        const totalPreguntasElement = document.getElementById('total-preguntas');
+        const puntosAcumuladosElement = document.getElementById('puntos-acumulados');
+        const nivelProgresoElement = document.getElementById('nivel-progreso');
+        const btnVolver = document.getElementById('btn-volver');
+
+        // Inicializar juego
+        function iniciarJuego() {
+            // Verificar jugador
+            if (!jugadorActual) {
+                alert("Por favor, ingresa tu nombre en la página principal primero.");
+                window.location.href = "index.html";
+                return;
+            }
+
+            // Configurar nivel
+            nivelActual = 1;
+            preguntasTotales = 5;
+            actualizarInterfaz();
+            generarNuevaPregunta();
+
+            // Event listeners
+            btnVolver.addEventListener('click', volverAlMenu);
+        }
+
+        // Actualizar interfaz
+        function actualizarInterfaz() {
+            nivelActualElement.textContent = nivelActual;
+            totalPreguntasElement.textContent = preguntasTotales;
+            puntosAcumuladosElement.textContent = puntosAcumulados;
+            aciertosElement.textContent = aciertos;
+        }
+
+        // Generar nueva pregunta
+        function generarNuevaPregunta() {
+            // Seleccionar emoción correcta aleatoria
+            emocionCorrecta = emociones[Math.floor(Math.random() * emociones.length)];
+            emocionActualElement.textContent = emocionCorrecta.codigo;
+            emocionActualElement.className = "astronauta-cara";
+
+            // Generar opciones (mezcladas)
+            const opciones = [...emociones];
+            opciones.sort(() => Math.random() - 0.5);
+
+            // Mostrar opciones
+            opcionesEmocionesElement.innerHTML = '';
+            opciones.forEach(emocion => {
+                const boton = document.createElement('button');
+                boton.className = 'btn-emocion';
+                boton.innerHTML = `${emocion.nombre}`;
+                boton.addEventListener('click', () => verificarRespuesta(emocion));
+                opcionesEmocionesElement.appendChild(boton);
+            });
+        }
+
+        // Verificar respuesta
+        function verificarRespuesta(emocionSeleccionada) {
+            preguntasRespondidas++;
+            const esCorrecta = emocionSeleccionada.nombre === emocionCorrecta.nombre;
+
+            // Efecto visual
+            emocionActualElement.classList.add(esCorrecta ? 'acierto' : 'error');
+
+            // Actualizar puntuación
+            if (esCorrecta) {
+                aciertos++;
+                const puntosGanados = nivelActual * 10;
+                puntosAcumulados += puntosGanados;
+            }
+
+            // Actualizar progreso
+            const progreso = (preguntasRespondidas / preguntasTotales) * 100;
+            nivelProgresoElement.style.width = `${progreso}%`;
+
+            // Actualizar interfaz
+            actualizarInterfaz();
+
+            // Verificar si se completó el nivel
+            if (preguntasRespondidas >= preguntasTotales) {
+                setTimeout(completarNivel, 1000);
+            } else {
+                setTimeout(generarNuevaPregunta, 1000);
+            }
+        }
+
+         // Completar nivel - Versión mejorada con modal personalizado
+        function completarNivel() {
+            // Guardar puntos temporalmente
+            SistemaPuntuacion.guardarResultado(puntosAcumulados, 'quiz-cosmico');
+
+            // Crear modal personalizado
+            const modalHTML = `
+                <div class="modal fade modal-espacial" id="modalResultado" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">¡Nivel ${nivelActual} Completado!</h5>
+                            </div>
+                            <div class="modal-body">
+                                <div class="efecto-constelacion" id="efecto-constelacion"></div>
+                                
+                                <div class="emoji-resultado">🚀</div>
+                                
+                                <div class="puntos-ganados">
+                                    +${puntosAcumulados} Puntos
+                                </div>
+                                
+                                <div class="detalles-resultado">
+                                    <p><i class="fas fa-check-circle" style="color: #4CAF50;"></i> Aciertos: ${aciertos}/${preguntasTotales}</p>
+                                    <p><i class="fas fa-trophy" style="color: #FFD700;"></i> Nivel completado: ${nivelActual}/3</p>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                ${nivelActual < 3 ? 
+                                    `<button type="button" class="btn-modal btn-continuar" id="btnContinuar">
+                                        <i class="fas fa-arrow-right"></i> Siguiente Nivel
+                                    </button>` 
+                                    : ''}
+                                <button type="button" class="btn-modal btn-volver" id="btnVolverModal">
+                                    <i class="fas fa-home"></i> Volver al Menú
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // Añadir modal al documento
+            document.body.insertAdjacentHTML('beforeend', modalHTML);
+            
+            // Crear efecto de constelación
+            crearEfectoConstelacion();
+
+            // Mostrar modal
+            const modal = new bootstrap.Modal(document.getElementById('modalResultado'));
+            modal.show();
+
+            // Configurar botones del modal
+            document.getElementById('btnContinuar')?.addEventListener('click', () => {
+                modal.hide();
+                setTimeout(() => {
+                    // Avanzar al siguiente nivel
+                    nivelActual++;
+                    aciertos = 0;
+                    preguntasRespondidas = 0;
+                    preguntasTotales += 2;
+                    nivelProgresoElement.style.width = '0%';
+                    actualizarInterfaz();
+                    generarNuevaPregunta();
+                    document.getElementById('modalResultado').remove();
+                }, 500);
+            });
+
+            document.getElementById('btnVolverModal').addEventListener('click', () => {
+                modal.hide();
+                setTimeout(() => {
+                    window.location.href = 'eleccionminijuego.html';
+                }, 500);
+            });
+
+            // Eliminar modal al cerrar
+            document.getElementById('modalResultado').addEventListener('hidden.bs.modal', function() {
+                this.remove();
+            });
+        }
+
+        // Crear efecto de constelación para el modal
+        function crearEfectoConstelacion() {
+            const contenedor = document.getElementById('efecto-constelacion');
+            if (!contenedor) return;
+            
+            contenedor.innerHTML = '';
+            const cantidad = 30;
+            
+            for (let i = 0; i < cantidad; i++) {
+                const estrella = document.createElement('div');
+                estrella.className = 'estrella-efecto';
+                
+                estrella.style.width = `${Math.random() * 4 + 2}px`;
+                estrella.style.height = estrella.style.width;
+                estrella.style.left = `${Math.random() * 100}%`;
+                estrella.style.top = `${Math.random() * 100}%`;
+                estrella.style.animationDelay = `${Math.random() * 2}s`;
+                estrella.style.animationDuration = `${Math.random() * 1 + 0.5}s`;
+                
+                contenedor.appendChild(estrella);
+            }
+        }
+
+        // Volver al menú
+        function volverAlMenu() {
+            if (preguntasRespondidas > 0 && preguntasRespondidas < preguntasTotales) {
+                if (!confirm('¿Estás seguro de que quieres salir? Perderás tu progreso.')) {
+                    return;
+                }
+            }
+            window.location.href = 'eleccionminijuego.html';
+        }
+
+        // Crear fondo estelar
+        function crearFondoEstelar() {
+            const fondo = document.getElementById('fondoEstelar');
+            const cantidadEstrellas = window.innerWidth < 576 ? 50 : 80;
+            
+            for (let i = 0; i < cantidadEstrellas; i++) {
+                const estrella = document.createElement('div');
+                estrella.className = 'estrella-fondo';
+                
+                const size = Math.random() * 3 + 1;
+                estrella.style.width = `${size}px`;
+                estrella.style.height = `${size}px`;
+                estrella.style.left = `${Math.random() * 100}%`;
+                estrella.style.top = `${Math.random() * 100}%`;
+                estrella.style.animationDelay = `${Math.random() * 5}s`;
+                estrella.style.animationDuration = `${Math.random() * 3 + 2}s`;
+                
+                fondo.appendChild(estrella);
+            }
+        }
+
+        // Iniciar al cargar
+        document.addEventListener('DOMContentLoaded', () => {
+            crearFondoEstelar();
+            iniciarJuego();
+        });
+    </script>
+</body>
+</html>

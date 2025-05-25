@@ -18,7 +18,7 @@
         --color-secundario: #4cc9f0;
         --color-acento: #0b68c5;
         --color-texto: #e2e2e2;
-        --color-fondo-nave: #16213e;
+        --color-fondo-nave: #0a0a1a;
         --color-rojo: #ff3e3e;
         --color-verde: #4caf50;
         --color-amarillo: #ffeb3b;
@@ -333,16 +333,16 @@
       // Sonidos
       const sonidos = {
         rojo: new Audio(
-          "https://www.soundjay.com/buttons/sounds/button-09.mp3"
+          "https://www.soundjay.com/buttons/sounds/button-09a.mp3"
         ),
         verde: new Audio(
-          "https://www.soundjay.com/buttons/sounds/button-09.mp3"
+          "https://www.soundjay.com/buttons/sounds/button-09a.mp3"
         ),
         amarillo: new Audio(
-          "https://www.soundjay.com/buttons/sounds/button-09.mp3"
+          "https://www.soundjay.com/buttons/sounds/button-09a.mp3"
         ),
         azul: new Audio(
-          "https://www.soundjay.com/buttons/sounds/button-09.mp3"
+          "https://www.soundjay.com/buttons/sounds/button-09a.mp3"
         ),
         error: new Audio(
           "https://www.soundjay.com/buttons/sounds/button-10.mp3"
@@ -563,14 +563,15 @@
               "¿Estás seguro de que quieres salir? Perderás tu progreso."
             )
           ) {
+            // Guardar puntuación antes de salir
+        if (puntos > 0) {
+          guardarPuntuacion();
+        }
             return;
           }
         }
 
-        // Guardar puntuación antes de salir
-        if (puntos > 0) {
-          guardarPuntuacion();
-        }
+        
 
         window.location.href = "eleccionminijuego.html";
       }
