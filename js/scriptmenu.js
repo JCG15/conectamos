@@ -35,17 +35,12 @@ function actualizarPuntuacion(nombre, puntos) {
     jugadores.push({
       nombre: nombre,
       puntos: puntos,
-      nivel: 1,
     });
   }
 
   // Ordenar jugadores por puntos (descendente)
   jugadores.sort((a, b) => b.puntos - a.puntos);
 
-  // Actualizar niveles basados en la posición
-  jugadores.forEach((jugador, index) => {
-    jugador.nivel = index + 1;
-  });
 
   // Guardar en localStorage
   localStorage.setItem("jugadores", JSON.stringify(jugadores));
@@ -61,7 +56,7 @@ function cargarPuntuaciones() {
 
   // Llenar la tabla
   jugadores.forEach((jugador, index) => {
-    const tr = document.createElement("tr");
+  const tr = document.createElement("tr");
 
     // Aplicar clases especiales a los primeros puestos
     let clasePuesto = "";
@@ -73,7 +68,6 @@ function cargarPuntuaciones() {
                     <td class="${clasePuesto}">${index + 1}</td>
                     <td class="${clasePuesto}">${jugador.nombre}</td>
                     <td>${jugador.puntos}</td>
-                    <td>${jugador.nivel}</td>
                 `;
 
     tbody.appendChild(tr);
@@ -82,6 +76,7 @@ function cargarPuntuaciones() {
 
 document.getElementById("simondice").addEventListener("click", function(){window.location.href='minijuegosimon.html'});
 document.getElementById("estrellas").addEventListener("click", function(){window.location.href='minijuegoestrellas.html'});
+document.getElementById("sentimientos").addEventListener("click", function(){window.location.href='minijuegosentimientos.html'});
 
 // Al cargar la página
 document.addEventListener("DOMContentLoaded", function () {
