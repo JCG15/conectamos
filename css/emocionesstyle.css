@@ -1,0 +1,395 @@
+/*Colores página*/
+:root {
+  --color-primario: #1a1a2e;
+  --color-secundario: #4cc9f0;
+  --color-acento: #0b68c5;
+  --color-texto: #e2e2e2;
+  --color-fondo: #0a0a1a;
+  --color-correcto: #4caf50;
+  --color-incorrecto: #f44336;
+}
+
+/*Estilos página*/
+body,
+html {
+  height: 100%;
+  margin: 0;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  color: var(--color-texto);
+  overflow: hidden;
+}
+
+/* Fondo estelar animado */
+.fondo-estelar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  background: linear-gradient(to bottom, #020111 0%, #0a0a1a 100%);
+  overflow: hidden;
+}
+
+.estrella-fondo {
+  position: absolute;
+  background: white;
+  border-radius: 50%;
+  animation: brillar 3s infinite alternate;
+}
+
+@keyframes brillar {
+  0% {
+    opacity: 0.2;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.1);
+  }
+  100% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+}
+
+.contenedor-juego {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 20px;
+  position: relative;
+  z-index: 1;
+}
+
+.titulo-juego {
+  color: var(--color-texto);
+  font-size: 2.5rem;
+  font-weight: 700;
+  text-shadow: 0 0 15px var(--color-secundario);
+  z-index: 3;
+  letter-spacing: 3px;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.panel-juego {
+  background-color: rgba(26, 26, 46, 0.7);
+  border-radius: 15px;
+  padding: 30px;
+  width: 100%;
+  max-width: 600px;
+  box-shadow: 0 0 30px rgba(11, 104, 197, 0.4);
+  border: 1px solid var(--color-secundario);
+  margin-bottom: 20px;
+}
+
+.astronauta-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 30px;
+}
+
+.astronauta {
+  width: 200px;
+  height: 200px;
+  background-color: #2a2a4a;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  box-shadow: 0 0 20px rgba(76, 201, 240, 0.3);
+  position: relative;
+}
+
+.astronauta-cara {
+  font-size: 5rem;
+  transition: all 0.5s ease;
+}
+
+.opciones-emociones {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.btn-emocion {
+  background: linear-gradient(135deg, var(--color-primario), #2a2a4a);
+  border: 2px solid var(--color-secundario);
+  color: var(--color-texto);
+  padding: 15px;
+  border-radius: 10px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.btn-emocion:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(76, 201, 240, 0.3);
+}
+
+.btn-emocion i {
+  font-size: 1.5rem;
+}
+
+.info-juego {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 600px;
+  margin-bottom: 20px;
+  font-size: 1.2rem;
+  background-color: rgba(26, 26, 46, 0.7);
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(11, 104, 197, 0.2);
+}
+
+.controles-juego {
+  display: flex;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.btn-juego {
+  background: linear-gradient(
+    135deg,
+    var(--color-acento),
+    var(--color-secundario)
+  );
+  color: white;
+  padding: 12px 25px;
+  border: none;
+  border-radius: 50px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.btn-juego:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(76, 201, 240, 0.5);
+}
+
+.nivel-indicador {
+  width: 100%;
+  height: 10px;
+  background-color: rgba(76, 201, 240, 0.2);
+  border-radius: 5px;
+  margin-top: 15px;
+  overflow: hidden;
+}
+
+.nivel-progreso {
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    var(--color-secundario),
+    var(--color-acento)
+  );
+  width: 0%;
+  transition: width 0.5s;
+}
+
+/* Animaciones */
+@keyframes acierto {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes error {
+  0% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-10px);
+  }
+  50% {
+    transform: translateX(10px);
+  }
+  75% {
+    transform: translateX(-10px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+.acierto {
+  animation: acierto 0.5s;
+  color: var(--color-correcto);
+}
+
+.error {
+  animation: error 0.5s;
+  color: var(--color-incorrecto);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .opciones-emociones {
+    grid-template-columns: 1fr;
+  }
+
+  .astronauta {
+    width: 150px;
+    height: 150px;
+  }
+
+  .astronauta-cara {
+    font-size: 4rem;
+  }
+
+  .btn-emocion {
+    padding: 12px;
+    font-size: 1rem;
+  }
+}
+
+/* Estilos modal */
+.modal-espacial .modal-content {
+  background: linear-gradient(135deg, #1a1a2e, #2a2a4a);
+  color: white;
+  border: 2px solid var(--color-secundario);
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 0 30px rgba(76, 201, 240, 0.5);
+}
+
+.modal-espacial .modal-header {
+  border-bottom: 1px solid var(--color-secundario);
+  background: rgba(11, 104, 197, 0.2);
+  padding: 20px;
+}
+
+.modal-espacial .modal-title {
+  color: var(--color-secundario);
+  font-size: 1.8rem;
+  text-align: center;
+  width: 100%;
+}
+
+.modal-espacial .modal-body {
+  padding: 30px;
+  text-align: center;
+}
+
+.modal-espacial .emoji-resultado {
+  font-size: 5rem;
+  margin: 20px 0;
+  animation: latido 1.5s infinite;
+}
+
+@keyframes latido {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.modal-espacial .puntos-ganados {
+  font-size: 2rem;
+  color: var(--color-secundario);
+  margin: 15px 0;
+  font-weight: bold;
+}
+
+.modal-espacial .detalles-resultado {
+  background: rgba(76, 201, 240, 0.1);
+  border-radius: 10px;
+  padding: 15px;
+  margin: 20px 0;
+}
+
+.modal-espacial .modal-footer {
+  border-top: 1px solid var(--color-secundario);
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  padding: 20px;
+}
+
+.modal-espacial .btn-modal {
+  min-width: 120px;
+  border: none;
+  border-radius: 50px;
+  padding: 10px 20px;
+  font-weight: 600;
+  transition: all 0.3s;
+}
+
+.modal-espacial .btn-continuar {
+  background: linear-gradient(
+    135deg,
+    var(--color-secundario),
+    var(--color-acento)
+  );
+  color: white;
+}
+
+.modal-espacial .btn-volver {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--color-texto);
+  border: 1px solid var(--color-secundario);
+}
+
+.modal-espacial .btn-modal:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(76, 201, 240, 0.4);
+}
+
+/* Efecto de constelación */
+.efecto-constelacion {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: -1;
+  opacity: 0.3;
+}
+
+.estrella-efecto {
+  position: absolute;
+  background: white;
+  border-radius: 50%;
+  animation: brillar-rapido 1s infinite alternate;
+}
+
+@keyframes brillar-rapido {
+  0% {
+    opacity: 0.2;
+    transform: scale(0.8);
+  }
+  100% {
+    opacity: 0.8;
+    transform: scale(1.2);
+  }
+}

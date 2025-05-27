@@ -1,5 +1,4 @@
 // Función para redirigir después de ingresar el nombre
-//addEventListener.getElementById
 document.getElementById("enviar").addEventListener("click",function () {
   const nombre = document.getElementById("nombreUsuario").value.trim();
   localStorage.setItem('nombre', nombre);
@@ -15,28 +14,26 @@ document.getElementById("enviar").addEventListener("click",function () {
     return;
   }
 
-  // Aquí iría la lógica de redirección
+  // Lógica de redirección
   console.log(`Bienvenido ${nombre}! Redirigiendo...`);
 
   // Cerrar el modal
   modal.hide();
 
-  // Mostrar mensaje de bienvenida (simulando redirección)
+  // Mostrar mensaje de bienvenida
   alert(`¡Bienvenido ${nombre}! Prepárate para la aventura.`);
 
-  // En un caso real, aquí redirigirías a la siguiente página
   window.location.href = `eleccionminijuego.html?nombre=${encodeURIComponent(nombre)}`;
 });
 
 
-// Validación en tiempo real
+// Validación
 document.getElementById("nombreUsuario").addEventListener("input", function () {
   if (this.value.trim() !== "") {
     this.classList.remove("is-invalid");
   }
 });
 
-// Inicializar el modal correctamente
 document.addEventListener("DOMContentLoaded", function () {
   var myModal = new bootstrap.Modal(document.getElementById("nombreModal"));
 

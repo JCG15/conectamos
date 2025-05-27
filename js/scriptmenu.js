@@ -3,7 +3,7 @@ let jugadores = JSON.parse(localStorage.getItem("jugadores")) || [];
 let jugadorActual = localStorage.getItem("nombre") || "";
 
 // Función para iniciar un juego
-function iniciarJuego(juego) {
+/*function iniciarJuego(juego) {
   if (!jugadorActual) {
     alert("Por favor, ingresa tu nombre en la página principal primero.");
     return;
@@ -20,7 +20,7 @@ function iniciarJuego(juego) {
 
   // Actualizar la tabla de puntuaciones
   cargarPuntuaciones();
-}
+}*/
 
 // Función para actualizar la puntuación de un jugador
 function actualizarPuntuacion(nombre, puntos) {
