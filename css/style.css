@@ -1,9 +1,12 @@
+/*Parameteros iguales en todas las páginas*/
+
+/*Fuente inicio*/
 @font-face {
-  font-family: "Titulo"; /* Nombre de la fuente */
-  src: url("../fuentes/Drawliner.ttf") format("truetype"); /* Ruta a la fuente*/
+  font-family: "Titulo";
+  src: url("../fuentes/Drawliner.ttf") format("truetype");
 }
 
-
+/*Body y html de todas las páginas*/
 body,
 html {
   height: 100%;

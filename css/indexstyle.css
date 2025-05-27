@@ -1,9 +1,13 @@
+/*Colores página*/
 :root {
   --color-primario: #3252bc;
   --color-secundario: #3252bc;
   --color-acento: #0b68c5;
   --color-texto: #ecf0f1;
 }
+
+/*Estilos página*/
+
 .contenedor {
   position: relative;
   height: 100vh;
@@ -21,6 +25,8 @@
   opacity: 0.7;
 }
 
+/*Pipo*/
+
 .pipo {
   position: absolute;
   width: 8%;
@@ -35,6 +41,9 @@
   transform: scale(1.05) rotate(-5deg);
 }
 
+
+/*Nave*/
+
 .nave {
   position: absolute;
   width: 20%;
@@ -44,7 +53,7 @@
   z-index: 2;
   animation: flotar 3s ease-in-out infinite alternate;
 }
-
+/*Movimiento nave*/
 @keyframes flotar {
   from {
     transform: translateY(0);
@@ -53,6 +62,8 @@
     transform: translateY(-20px);
   }
 }
+
+/*Estilos página*/
 
 .titulo {
   position: absolute;
@@ -108,7 +119,7 @@
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
 }
 
-/* Estilos personalizados para el modal */
+/* Estilos para el modal */
 .modal-content {
   border-radius: 15px;
   border: none;
@@ -159,15 +170,8 @@
   transform: translateY(-2px);
 }
 
-/* Efectos de partículas (opcional) */
-.particula {
-  position: absolute;
-  background-color: rgba(255, 255, 255, 0.8);
-  border-radius: 50%;
-  z-index: 0;
-}
 
-/* Responsive */
+/*Estilos página*/
 @media (max-width: 992px) {
   .titulo {
     font-size: 3rem;

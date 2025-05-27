@@ -4,26 +4,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Conectamos - Menú</title>
+
     <!-- Bootstrap CSS -->
-    <link href="./css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome para iconos -->
+    <link href="./css/bootstrap/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Iconos -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="icon" type="image/png" href="./imagenes/cabezapipo.png">
-   <link rel="stylesheet" href="./css/style.css">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="./css/style.css">
     <link rel="stylesheet" href="./css/menustyle.css">
 </head>
 <body>
     <div class="contenedor-nave">
-        <img src="./imagenes/fondonave2.jpg" alt="Interior de nave espacial" class="fondo-nave img-fluid">
+
+        <img src="./imagenes/fondonave2.jpg" alt="Interior de nave la espacial" class="fondo-nave img-fluid">
+        
         <h1 class="titulo-nave">Menú</h1>
         
         <div class="panel-control">
-            <button class="btn-nave" data-bs-toggle="modal" data-bs-target="#modalMinijuegos">
-                <i class="fas fa-gamepad"></i> Minijuegos
-            </button>
-            <button class="btn-nave" data-bs-toggle="modal" data-bs-target="#modalPuntuaciones">
-                <i class="fas fa-trophy"></i> Puntuación
-            </button>
+            <button class="btn-nave" data-bs-toggle="modal" data-bs-target="#modalMinijuegos"><i class="fas fa-gamepad"></i> Minijuegos</button>
+            <button class="btn-nave" data-bs-toggle="modal" data-bs-target="#modalPuntuaciones"><i class="fas fa-trophy"></i> Puntuación</button>
         </div>
         
         <!-- Modal Minijuegos -->
@@ -31,14 +33,12 @@
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="modalMinijuegosLabel">
-                            <i class="fas fa-gamepad me-2"></i>Selecciona un Minijuego
-                        </h5>
+                        <h5 class="modal-title" id="modalMinijuegosLabel"><i class="fas fa-gamepad me-2"></i>Selecciona un Minijuego</h5>
                         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <div class="juegos-container">
-                            <div class="juego-card" id="simondice" onclick="iniciarJuego('memoria')">
+                            <div class="juego-card" id="simondice">
                                 <img src="./imagenes/simondice.jpeg" alt="Juego de Memoria" class="juego-img">
                                 <div class="juego-info">
                                     <h4 class="juego-titulo">Memoria Espacial</h4>
@@ -46,7 +46,7 @@
                                 </div>
                             </div>
                             
-                            <div class="juego-card" id="estrellas" onclick="iniciarJuego('estrellas')">
+                            <div class="juego-card" id="estrellas">
                                 <img src="./imagenes/parejas.png" alt="Juego de parejas" class="juego-img">
                                 <div class="juego-info">
                                     <h4 class="juego-titulo">Estrellas perdidas</h4>
@@ -54,7 +54,7 @@
                                 </div>
                             </div>
                             
-                            <div class="juego-card" onclick="iniciarJuego('puzzle')">
+                            <div class="juego-card">
                                 <img src="./imagenes/puzzle.png" alt="Juego de Puzzle" class="juego-img">
                                 <div class="juego-info">
                                     <h4 class="juego-titulo">Puzzle Galáctico</h4>
@@ -62,7 +62,7 @@
                                 </div>
                             </div>
                             
-                            <div class="juego-card" id="sentimientos" onclick="iniciarJuego('quiz')">
+                            <div class="juego-card" id="sentimientos">
                                 <img src="./imagenes/fondosentimientos.png" alt="Juego de Quiz" class="juego-img">
                                 <div class="juego-info">
                                     <h4 class="juego-titulo">Quiz Cósmico</h4>
@@ -83,9 +83,7 @@
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="modalPuntuacionesLabel">
-                            <i class="fas fa-trophy me-2"></i>Tabla de Puntuaciones
-                        </h5>
+                        <h5 class="modal-title" id="modalPuntuacionesLabel"><i class="fas fa-trophy me-2"></i>Tabla de Puntuaciones</h5>
                         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
@@ -98,7 +96,7 @@
                                 </tr>
                             </thead>
                             <tbody id="tablaPuntuacionesBody">
-                                <!-- Las puntuaciones se cargarán aquí con JavaScript -->
+                                <!-- Las puntuaciones se cargan aquí con JS -->
                             </tbody>
                         </table>
                     </div>
@@ -109,8 +107,8 @@
             </div>
         </div>
     </div>
-    <!-- Bootstrap JS Bundle with Popper -->
-    <script src="./js/bootstrap.bundle.min.js"></script>
+    <!-- Bootstrap JS -->
+    <script src="./js/bootstrap/bootstrap.bundle.min.js"></script>
     <script src="./js/scriptmenu.js"></script>
 </body>
 </html>

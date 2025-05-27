@@ -1,0 +1,251 @@
+/*Colores página*/
+
+:root {
+  --color-primario: #1a1a2e;
+  --color-secundario: #4cc9f0;
+  --color-acento: #0b68c5;
+  --color-texto: #e2e2e2;
+  --color-fondo-nave: #0a0a1a;
+  --color-rojo: #ff3e3e;
+  --color-verde: #4caf50;
+  --color-amarillo: #ffeb3b;
+  --color-azul: #2196f3;
+}
+
+/*Estilos página*/
+
+.contenedor-juego {
+  position: relative;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+  background: var(--color-fondo-nave);
+  background-image: radial-gradient(
+      circle at 20% 30%,
+      rgba(76, 201, 240, 0.1) 0%,
+      transparent 20%
+    ),
+    radial-gradient(
+      circle at 80% 70%,
+      rgba(247, 37, 133, 0.1) 0%,
+      transparent 20%
+    );
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.fondo-juego {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 1;
+  opacity: 0.6;
+}
+
+.titulo-juego {
+  color: var(--color-texto);
+  font-size: 2.5rem;
+  font-weight: 700;
+  text-shadow: 0 0 15px var(--color-secundario);
+  z-index: 3;
+  letter-spacing: 3px;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.panel-juego {
+  background-color: rgba(26, 26, 46, 0.8);
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: 0 0 30px rgba(11, 104, 197, 0.5);
+  border: 2px solid var(--color-secundario);
+  z-index: 4;
+  width: 90%;
+  max-width: 500px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.tablero-simon {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 15px;
+  width: 100%;
+  max-width: 300px;
+  margin: 20px auto;
+}
+
+.boton-simon {
+  aspect-ratio: 1/1;
+  border-radius: 20px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.boton-simon::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.boton-simon.activo::after {
+  opacity: 1;
+}
+
+.boton-simon:disabled {
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+#simon-rojo {
+  background-color: var(--color-rojo);
+}
+
+#simon-verde {
+  background-color: var(--color-verde);
+}
+
+#simon-amarillo {
+  background-color: var(--color-amarillo);
+}
+
+#simon-azul {
+  background-color: var(--color-azul);
+}
+
+.info-juego {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 20px;
+  color: var(--color-texto);
+  font-size: 1.2rem;
+}
+
+.controles-juego {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin-top: 20px;
+}
+
+.btn-juego {
+  background-color: var(--color-acento);
+  color: white;
+  padding: 12px 25px;
+  border: none;
+  border-radius: 50px;
+  font-size: 1.2rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  margin: 10px;
+  width: 100%;
+  max-width: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-juego:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(11, 104, 197, 0.5);
+}
+
+.btn-juego i {
+  margin-right: 10px;
+}
+
+.nivel-indicador {
+  width: 100%;
+  height: 10px;
+  background-color: rgba(76, 201, 240, 0.2);
+  border-radius: 5px;
+  margin-top: 15px;
+  overflow: hidden;
+}
+
+.nivel-progreso {
+  height: 100%;
+  background-color: var(--color-secundario);
+  width: 0%;
+  transition: width 0.5s;
+}
+
+.mensaje-juego {
+  color: var(--color-texto);
+  font-size: 1.3rem;
+  margin: 15px 0;
+  text-align: center;
+  min-height: 40px;
+  font-weight: 600;
+}
+
+/* Efectos de estrellas */
+.estrella {
+  position: absolute;
+  background-color: white;
+  border-radius: 50%;
+  z-index: 0;
+  animation: brillar 2s infinite alternate;
+}
+
+@keyframes brillar {
+  from {
+    opacity: 0.3;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .titulo-juego {
+    font-size: 2.2rem;
+    margin-bottom: 20px;
+  }
+
+  .panel-juego {
+    padding: 20px;
+  }
+
+  .info-juego {
+    font-size: 1rem;
+  }
+
+  .mensaje-juego {
+    font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .titulo-juego {
+    font-size: 1.8rem;
+  }
+
+  .tablero-simon {
+    max-width: 250px;
+    grid-gap: 10px;
+  }
+
+  .btn-juego {
+    padding: 10px 20px;
+    font-size: 1rem;
+  }
+}

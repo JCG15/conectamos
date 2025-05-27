@@ -3,237 +3,317 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aventura Espacial - Puzles para Niños</title>
+    <title>Puzles Espaciales</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome para iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body {
-            font-family: 'Comic Sans MS', cursive, sans-serif;
-            background-color: #0a043c;
-            color: white;
-            text-align: center;
+        :root {
+            --color-primario: #1a1a2e;
+            --color-secundario: #4cc9f0;
+            --color-acento: #0b68c5;
+            --color-texto: #e2e2e2;
+            --color-fondo: #0a0a1a;
+            --color-fondo-nave: #0f0f23;
+        }
+        
+        body, html {
+            height: 100%;
             margin: 0;
-            padding: 20px;
-            background-image: url('https://images.unsplash.com/photo-1534796636912-3b95b3ab5986?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
-            background-size: cover;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--color-fondo-nave);
+            color: var(--color-texto);
+            overflow-x: hidden;
         }
-
-        h1 {
-            color: #f7d039;
-            text-shadow: 2px 2px 4px #000;
-            font-size: 2.5em;
+        
+        /* Fondo estelar animado */
+        .fondo-estelar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%);
+            overflow: hidden;
         }
-
+        
+        .estrella-fondo {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: brillar 2s infinite alternate;
+        }
+        
+        @keyframes brillar {
+            0% { opacity: 0.2; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(1.1); }
+            100% { opacity: 0.3; transform: scale(1); }
+        }
+        
         .contenedor-juego {
-            max-width: 800px;
-            margin: 0 auto;
-            background-color: rgba(10, 4, 60, 0.8);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
             padding: 20px;
-            border-radius: 15px;
-            box-shadow: 0 0 20px #6e3fbc;
+            position: relative;
+            z-index: 1;
         }
-
+        
+        .titulo-juego {
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            text-align: center;
+            color: var(--color-secundario);
+            text-shadow: 0 0 10px rgba(76, 201, 240, 0.7);
+        }
+        
+        .info-juego {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 800px;
+            margin: 20px auto;
+            font-size: 1.2rem;
+            background-color: rgba(26, 26, 46, 0.7);
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(11, 104, 197, 0.2);
+        }
+        
         .contenedor-puzle {
             display: flex;
-            justify-content: space-around;
-            margin: 30px 0;
-            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: rgba(26, 26, 46, 0.7);
+            border-radius: 15px;
+            box-shadow: 0 0 30px rgba(11, 104, 197, 0.3);
+            border: 1px solid var(--color-secundario);
         }
-
+        
         .piezas-puzle {
-            width: 200px;
+            width: 250px;
             min-height: 300px;
-            border: 3px dashed #6e3fbc;
+            padding: 15px;
+            background-color: rgba(76, 201, 240, 0.1);
             border-radius: 10px;
-            padding: 10px;
-            background-color: rgba(110, 63, 188, 0.2);
+            border: 2px dashed var(--color-secundario);
+            display: flex;
+            flex-wrap: wrap;
+            align-content: flex-start;
+            gap: 10px;
         }
-
+        
         .tablero-puzle {
-            width: 300px;
-            min-height: 300px;
-            border: 3px solid #f7d039;
+            width: 350px;
+            min-height: 350px;
+            padding: 15px;
+            background-color: rgba(26, 26, 46, 0.5);
             border-radius: 10px;
-            padding: 10px;
-            background-color: rgba(247, 208, 57, 0.1);
+            border: 2px solid var(--color-acento);
+            display: flex;
+            flex-wrap: wrap;
+            align-content: flex-start;
+            gap: 10px;
             position: relative;
         }
-
+        
         .pieza {
             width: 80px;
             height: 80px;
-            margin: 5px;
             cursor: move;
-            transition: transform 0.2s;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             background-size: cover;
             background-position: center;
             border-radius: 8px;
-            box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            position: relative;
+            z-index: 2;
         }
-
+        
         .pieza:hover {
             transform: scale(1.05);
-            box-shadow: 0 0 10px #f7d039;
+            box-shadow: 0 0 15px var(--color-secundario);
         }
-
+        
         .espacio {
             width: 80px;
             height: 80px;
-            margin: 5px;
-            display: inline-block;
-            background-color: rgba(247, 208, 57, 0.3);
+            background-color: rgba(76, 201, 240, 0.2);
             border-radius: 8px;
-            border: 2px dashed #f7d039;
+            border: 2px dashed var(--color-secundario);
+            transition: all 0.3s ease;
         }
-
+        
         .espacio.resaltado {
-            background-color: rgba(110, 63, 188, 0.5);
-            border: 2px solid #6e3fbc;
+            background-color: rgba(76, 201, 240, 0.4);
+            border: 2px solid var(--color-secundario);
+            box-shadow: 0 0 15px var(--color-secundario);
         }
-
+        
         .espacio.lleno {
             border: none;
             background-color: transparent;
+            padding: 0;
         }
-
-        .controles {
-            margin: 20px 0;
+        
+        .controles-juego {
+            margin-top: 30px;
+            display: flex;
+            gap: 15px;
         }
-
-        .boton {
-            background-color: #6e3fbc;
+        
+        .btn-juego {
+            background: linear-gradient(135deg, var(--color-acento), var(--color-secundario));
             color: white;
+            padding: 12px 25px;
             border: none;
-            padding: 10px 20px;
-            margin: 0 10px;
-            border-radius: 20px;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
             cursor: pointer;
-            font-size: 1em;
             transition: all 0.3s;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .btn-juego:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(76, 201, 240, 0.5);
+        }
+        
+        /* Efecto de confeti */
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: var(--color-secundario);
+            opacity: 0;
+            z-index: 10;
+            animation: confetti-fall 2s ease-out forwards;
         }
 
-        .boton:hover {
-            background-color: #f7d039;
-            color: #0a043c;
-            transform: scale(1.05);
+        @keyframes confetti-fall {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(300px) rotate(360deg); opacity: 0; }
         }
-
-        .puntuacion {
-            font-size: 1.2em;
-            margin: 20px 0;
-            color: #f7d039;
-        }
-
-        .nivel-actual {
-            font-size: 1.5em;
-            margin: 10px 0;
-            color: #6e3fbc;
-            text-shadow: 1px 1px 2px #000;
-        }
-
-        /* Modal */
-        .modal {
-            display: none;
+        
+        /* Modal de nivel completado */
+        .modal-completado {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             background-color: rgba(0, 0, 0, 0.8);
-            z-index: 1000;
+            display: flex;
             justify-content: center;
             align-items: center;
+            z-index: 100;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
         }
-
+        
+        .modal-completado.mostrar {
+            opacity: 1;
+            pointer-events: all;
+        }
+        
         .contenido-modal {
-            background-color: #0a043c;
+            background: linear-gradient(145deg, var(--color-primario), #2a2a4a);
             padding: 30px;
             border-radius: 15px;
-            width: 80%;
+            width: 90%;
             max-width: 500px;
-            border: 3px solid #f7d039;
-            box-shadow: 0 0 30px #6e3fbc;
             text-align: center;
+            border: 2px solid var(--color-secundario);
+            box-shadow: 0 0 30px var(--color-acento);
+            transform: scale(0.9);
+            transition: transform 0.3s;
             position: relative;
-            animation: aparecerModal 0.5s;
         }
-
-        @keyframes aparecerModal {
-            from { transform: scale(0.5); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
+        
+        .modal-completado.mostrar .contenido-modal {
+            transform: scale(1);
         }
-
-        .modal h2 {
-            color: #f7d039;
-            font-size: 2em;
-            margin-top: 0;
-        }
-
-        .modal p {
-            font-size: 1.2em;
-            margin: 20px 0;
-        }
-
-        .estrellas-modal {
-            font-size: 2.5em;
-            color: #f7d039;
-            margin: 20px 0;
-        }
-
+        
         .imagen-modal {
             width: 150px;
             height: 150px;
-            margin: 0 auto;
+            margin: 0 auto 20px;
             background-size: contain;
             background-repeat: no-repeat;
             background-position: center;
+            border-radius: 10px;
+            border: 2px solid var(--color-secundario);
         }
-
-        .cerrar-modal {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: none;
-            border: none;
-            color: white;
-            font-size: 1.5em;
-            cursor: pointer;
+        
+        .estrellas-modal {
+            font-size: 2.5em;
+            color: var(--color-secundario);
+            margin: 15px 0;
+            text-shadow: 0 0 10px rgba(76, 201, 240, 0.7);
         }
-
-        /* Nave espacial decorativa */
-        .nave-espacial {
-            position: absolute;
-            width: 60px;
-            height: 60px;
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="%23f7d039" d="M256 0c-16 0-32 16-32 32v32h64V32c0-16-16-32-32-32zM64 64c-35 0-64 29-64 64v64c0 23 12 43 32 55v234c0 8 8 16 16 16h96c8 0 16-8 16-16V320h192v181c0 8 8 16 16 16h96c8 0 16-8 16-16V247c20-12 32-32 32-55v-64c0-35-29-64-64-64H64zm304 96c0-8-8-16-16-16H160c-8 0-16 8-16 16v64c0 8 8 16 16 16h192c8 0 16-8 16-16v-64z"/></svg>');
-            background-size: contain;
-            animation: flotar 5s infinite ease-in-out;
-            opacity: 0.7;
-        }
-
-        @keyframes flotar {
-            0%, 100% { transform: translateY(0) rotate(5deg); }
-            50% { transform: translateY(-20px) rotate(-5deg); }
-        }
-
-        /* Responsive */
-        @media (max-width: 600px) {
+        
+        @media (max-width: 768px) {
             .contenedor-puzle {
                 flex-direction: column;
                 align-items: center;
             }
             
             .piezas-puzle, .tablero-puzle {
-                width: 90%;
-                margin-bottom: 20px;
+                width: 100%;
+            }
+            
+            .pieza, .espacio {
+                width: 70px;
+                height: 70px;
+            }
+            
+            .titulo-juego {
+                font-size: 2rem;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .pieza, .espacio {
+                width: 60px;
+                height: 60px;
+            }
+            
+            .info-juego {
+                font-size: 1rem;
+            }
+            
+            .btn-juego {
+                padding: 10px 20px;
+                font-size: 0.9rem;
             }
         }
     </style>
 </head>
 <body>
+    <!-- Fondo estelar animado -->
+    <div class="fondo-estelar" id="fondoEstelar"></div>
+    
     <div class="contenedor-juego">
-        <h1>🧩 Aventura Espacial 🚀</h1>
-        <div class="nivel-actual">Nivel: <span id="nivel-actual">1</span></div>
-        <div class="puntuacion">Puntos: <span id="puntos">0</span> ✨</div>
+        <h1 class="titulo-juego">🧩 Puzles Espaciales 🚀</h1>
+        
+        <div class="info-juego">
+            <div>Nivel: <span id="nivel-actual">1</span>/5</div>
+            <div>Puntos: <span id="puntos">0</span> ✨</div>
+            <div>Piezas: <span id="piezas-completadas">0</span>/<span id="total-piezas">4</span></div>
+        </div>
         
         <div class="contenedor-puzle">
             <div class="piezas-puzle" id="contenedor-piezas">
@@ -244,31 +324,38 @@
             </div>
         </div>
         
-        <div class="controles">
-            <button class="boton" id="boton-reiniciar">Reiniciar Nivel</button>
-            <button class="boton" id="boton-siguiente" disabled>Siguiente Nivel</button>
+        <div class="controles-juego">
+            <button class="btn-juego" id="boton-reiniciar">
+                <i class="fas fa-sync-alt"></i> Reiniciar
+            </button>
+            <button class="btn-juego" id="boton-siguiente" disabled>
+                <i class="fas fa-arrow-right"></i> Siguiente
+            </button>
         </div>
     </div>
     
     <!-- Modal de nivel completado -->
-    <div class="modal" id="modal-completado">
+    <div class="modal-completado" id="modal-completado">
         <div class="contenido-modal">
-            <button class="cerrar-modal" id="cerrar-modal">&times;</button>
-            <div class="imagen-modal" id="imagen-modal"></div>
             <h2>¡Nivel Completado!</h2>
-            <p>¡Gran trabajo, astronauta!</p>
+            <div class="imagen-modal" id="imagen-modal"></div>
             <div class="estrellas-modal" id="estrellas-modal">⭐⭐⭐</div>
+            <p>¡Excelente trabajo, astronauta!</p>
             <p>Has ganado <span id="puntos-ganados">0</span> puntos ✨</p>
-            <button class="boton" id="boton-continuar">Continuar</button>
+            <button class="btn-juego" id="boton-continuar">
+                <i class="fas fa-arrow-right"></i> Continuar
+            </button>
         </div>
     </div>
-    
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         // Datos del juego
         const datosJuego = {
             niveles: [
                 {
-                    imagen: 'https://cdn.pixabay.com/photo/2016/07/30/19/52/rocket-1557619_960_720.png',
+                    imagen: './imagenes/pipo.png',
                     piezas: 4,
                     filas: 2,
                     columnas: 2,
@@ -305,7 +392,8 @@
             ],
             nivelActual: 0,
             puntuacion: 0,
-            piezasCompletadas: 0
+            piezasCompletadas: 0,
+            piezaArrastrada: null
         };
 
         // Elementos del DOM
@@ -313,10 +401,11 @@
         const contenedorTablero = document.getElementById('contenedor-tablero');
         const elementoNivelActual = document.getElementById('nivel-actual');
         const elementoPuntuacion = document.getElementById('puntos');
+        const elementoPiezasCompletadas = document.getElementById('piezas-completadas');
+        const elementoTotalPiezas = document.getElementById('total-piezas');
         const botonReiniciar = document.getElementById('boton-reiniciar');
         const botonSiguiente = document.getElementById('boton-siguiente');
         const modalCompletado = document.getElementById('modal-completado');
-        const botonCerrarModal = document.getElementById('cerrar-modal');
         const botonContinuar = document.getElementById('boton-continuar');
         const elementoEstrellasModal = document.getElementById('estrellas-modal');
         const elementoPuntosGanados = document.getElementById('puntos-ganados');
@@ -336,11 +425,62 @@
             localStorage.setItem('puntuacionPuzleEspacial', datosJuego.puntuacion.toString());
         }
 
+        // Crear fondo estelar
+        function crearFondoEstelar() {
+            const fondo = document.getElementById('fondoEstelar');
+            const cantidadEstrellas = 100;
+            
+            for (let i = 0; i < cantidadEstrellas; i++) {
+                const estrella = document.createElement('div');
+                estrella.className = 'estrella-fondo';
+                
+                // Tamaño aleatorio
+                const size = Math.random() * 3 + 1;
+                estrella.style.width = `${size}px`;
+                estrella.style.height = `${size}px`;
+                
+                // Posición aleatoria
+                estrella.style.left = `${Math.random() * 100}%`;
+                estrella.style.top = `${Math.random() * 100}%`;
+                
+                // Opacidad y animación aleatoria
+                estrella.style.opacity = Math.random();
+                estrella.style.animationDelay = `${Math.random() * 2}s`;
+                estrella.style.animationDuration = `${Math.random() * 3 + 1}s`;
+                
+                fondo.appendChild(estrella);
+            }
+        }
+
+        // Crear efecto de confeti
+        function crearConfetti(x, y) {
+            for (let i = 0; i < 10; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = `${x + Math.random() * 20 - 10}px`;
+                confetti.style.top = `${y + Math.random() * 20 - 10}px`;
+                confetti.style.backgroundColor = getRandomColor();
+                confetti.style.animationDelay = `${i * 0.1}s`;
+                
+                document.body.appendChild(confetti);
+                
+                // Eliminar después de la animación
+                setTimeout(() => {
+                    confetti.remove();
+                }, 2000);
+            }
+        }
+        
+        function getRandomColor() {
+            const colors = ['#4cc9f0', '#0b68c5', '#f72585', '#7209b7', '#3a0ca3', '#4361ee'];
+            return colors[Math.floor(Math.random() * colors.length)];
+        }
+
         // Inicializar el juego
         function iniciarJuego() {
             cargarPuntuacion();
+            crearFondoEstelar();
             configurarNivel(datosJuego.nivelActual);
-            crearNavesFlotantes();
         }
 
         // Configurar nivel
@@ -350,6 +490,8 @@
             
             // Actualizar UI
             elementoNivelActual.textContent = indiceNivel + 1;
+            elementoTotalPiezas.textContent = nivel.piezas;
+            elementoPiezasCompletadas.textContent = '0';
             botonSiguiente.disabled = true;
             
             // Limpiar contenedores
@@ -385,6 +527,7 @@
                 
                 // Eventos drag and drop
                 pieza.addEventListener('dragstart', arrastrarInicio);
+                pieza.addEventListener('dragend', arrastrarFinal);
                 
                 contenedorPiezas.appendChild(pieza);
             }
@@ -392,9 +535,9 @@
 
         // Crear espacios del tablero
         function crearEspaciosTablero(nivel) {
-            // Ajustar tamaño del tablero según el nivel
-            contenedorTablero.style.width = `${nivel.columnas * 90 + 20}px`;
-            contenedorTablero.style.height = `${nivel.filas * 90 + 20}px`;
+            // Ajustar tamaño del tablero
+            contenedorTablero.style.width = `${nivel.columnas * 90 + 40}px`;
+            contenedorTablero.style.height = `${nivel.filas * 90 + 40}px`;
             
             // Crear matriz para guardar posiciones
             const posiciones = [];
@@ -424,10 +567,15 @@
 
         // Funciones para drag and drop
         function arrastrarInicio(evento) {
+            datosJuego.piezaArrastrada = evento.target;
             evento.dataTransfer.setData('text/plain', evento.target.dataset.indice);
             setTimeout(() => {
-                evento.target.style.visibility = 'hidden';
+                evento.target.style.opacity = '0.4';
             }, 0);
+        }
+        
+        function arrastrarFinal(evento) {
+            evento.target.style.opacity = '1';
         }
 
         function arrastrarSobre(evento) {
@@ -451,21 +599,20 @@
             
             const indicePieza = evento.dataTransfer.getData('text/plain');
             const indiceEspacio = evento.target.dataset.indice;
-            const indiceOriginal = evento.target.dataset.indiceOriginal;
             
             // Verificar si la pieza es correcta
             if (indicePieza === indiceEspacio) {
-                const pieza = document.querySelector(`.pieza[data-indice="${indicePieza}"]`);
+                const pieza = datosJuego.piezaArrastrada;
                 
                 // Crear copia de la pieza en el espacio
                 const clonPieza = pieza.cloneNode(true);
-                clonPieza.style.visibility = 'visible';
                 clonPieza.style.position = 'absolute';
                 clonPieza.style.top = '0';
                 clonPieza.style.left = '0';
-                clonPieza.style.margin = '0';
                 clonPieza.style.width = '100%';
                 clonPieza.style.height = '100%';
+                clonPieza.style.margin = '0';
+                clonPieza.style.opacity = '1';
                 clonPieza.style.cursor = 'default';
                 clonPieza.removeAttribute('draggable');
                 
@@ -477,13 +624,21 @@
                 // Eliminar la pieza original
                 pieza.remove();
                 
+                // Crear efecto de confeti
+                const rect = evento.target.getBoundingClientRect();
+                crearConfetti(rect.left + rect.width/2, rect.top + rect.height/2);
+                
                 // Actualizar progreso
                 datosJuego.piezasCompletadas++;
+                elementoPiezasCompletadas.textContent = datosJuego.piezasCompletadas;
                 
                 // Verificar si se completó el nivel
                 if (datosJuego.piezasCompletadas === datosJuego.niveles[datosJuego.nivelActual].piezas) {
                     nivelCompletado();
                 }
+            } else {
+                // Si la pieza no es correcta, devolverla a su posición original
+                datosJuego.piezaArrastrada.style.opacity = '1';
             }
         }
 
@@ -506,7 +661,7 @@
             elementoImagenModal.style.backgroundImage = `url(${nivel.imagen})`;
             
             // Mostrar modal
-            modalCompletado.style.display = 'flex';
+            modalCompletado.classList.add('mostrar');
             
             // Habilitar siguiente nivel
             botonSiguiente.disabled = false;
@@ -524,43 +679,31 @@
             return array;
         }
 
-        function crearNavesFlotantes() {
-            // Crear naves espaciales decorativas
-            for (let i = 0; i < 5; i++) {
-                const nave = document.createElement('div');
-                nave.className = 'nave-espacial';
-                nave.style.left = `${Math.random() * 90 + 5}%`;
-                nave.style.top = `${Math.random() * 90 + 5}%`;
-                nave.style.transform = `scale(${Math.random() * 0.5 + 0.5})`;
-                nave.style.animationDelay = `${Math.random() * 5}s`;
-                document.body.appendChild(nave);
-            }
-        }
-
         // Event listeners
         botonReiniciar.addEventListener('click', () => {
             configurarNivel(datosJuego.nivelActual);
         });
 
         botonSiguiente.addEventListener('click', () => {
+            modalCompletado.classList.remove('mostrar');
             datosJuego.nivelActual++;
             if (datosJuego.nivelActual >= datosJuego.niveles.length) {
                 datosJuego.nivelActual = 0; // Volver al primer nivel
             }
             configurarNivel(datosJuego.nivelActual);
-            modalCompletado.style.display = 'none';
-        });
-
-        botonCerrarModal.addEventListener('click', () => {
-            modalCompletado.style.display = 'none';
         });
 
         botonContinuar.addEventListener('click', () => {
-            modalCompletado.style.display = 'none';
+            modalCompletado.classList.remove('mostrar');
+            datosJuego.nivelActual++;
+            if (datosJuego.nivelActual >= datosJuego.niveles.length) {
+                datosJuego.nivelActual = 0; // Volver al primer nivel
+            }
+            configurarNivel(datosJuego.nivelActual);
         });
 
-        // Iniciar el juego
-        iniciarJuego();
+        // Iniciar el juego al cargar
+        document.addEventListener('DOMContentLoaded', iniciarJuego);
     </script>
 </body>
 </html>
