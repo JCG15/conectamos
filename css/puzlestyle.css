@@ -1,0 +1,286 @@
+/*Colores página*/
+:root {
+  --color-primario: #1a1a2e;
+  --color-secundario: #4cc9f0;
+  --color-acento: #0b68c5;
+  --color-texto: #e2e2e2;
+  --color-fondo: #0a0a1a;
+}
+
+/*Estilos página*/
+body,
+html {
+  height: 100%;
+  margin: 0;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  color: var(--color-texto);
+  overflow-x: hidden;
+}
+
+/*Estilos barra lateral*/
+body::-webkit-scrollbar {
+  width: 12px;
+}
+
+body::-webkit-scrollbar-track {
+  background: var(--color-primario);
+}
+
+body::-webkit-scrollbar-thumb {
+  background-color: var(--color-primario);
+  border-radius: 20px;
+  border: 3px solid #4cc9f0;
+}
+
+/* Fondo estelar animado */
+.fondo-estelar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
+  overflow: hidden;
+}
+
+.estrella-fondo {
+  position: absolute;
+  background: white;
+  border-radius: 50%;
+  animation: brillar 2s infinite alternate;
+}
+
+@keyframes brillar {
+  0% {
+    opacity: 0.2;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.1);
+  }
+  100% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+}
+
+.contenedor-juego {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 20px;
+  position: relative;
+  z-index: 1;
+}
+
+.titulo-juego {
+  color: var(--color-texto);
+  font-size: 3rem;
+  font-weight: 700;
+  text-shadow: 0 0 15px var(--color-secundario);
+  z-index: 3;
+  letter-spacing: 3px;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.area-puzzle {
+  width: 90%;
+  max-width: 600px;
+  min-height: 400px;
+  margin: 0 auto;
+  background-color: rgba(26, 26, 46, 0.7);
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 0 30px rgba(11, 104, 197, 0.3);
+  border: 1px solid var(--color-secundario);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.contenedor-piezas {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 20px;
+  padding: 10px;
+  background-color: rgba(11, 104, 197, 0.1);
+  border-radius: 10px;
+  min-height: 100px;
+}
+
+.pieza {
+  width: 80px;
+  height: 80px;
+  background-size: cover;
+  cursor: grab;
+  border: 2px solid var(--color-secundario);
+  border-radius: 8px;
+  transition: transform 0.2s, box-shadow 0.2s;
+  position: relative;
+}
+
+.pieza:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 10px var(--color-secundario);
+}
+
+.pieza.encajada {
+  cursor: default;
+  opacity: 0.7;
+  transform: scale(0.95);
+  box-shadow: 0 0 15px var(--color-secundario);
+}
+
+.tablero-puzzle {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  width: 100%;
+  max-width: 400px;
+  min-height: 200px;
+  padding: 15px;
+  background-color: rgba(11, 104, 197, 0.1);
+  border-radius: 10px;
+}
+
+.hueco {
+  width: 100%;
+  aspect-ratio: 1/1;
+  border: 2px dashed var(--color-secundario);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s;
+}
+
+.hueco.ocupado {
+  border: 2px solid var(--color-secundario);
+  background-color: rgba(76, 201, 240, 0.1);
+}
+
+.hueco.hover {
+  background-color: rgba(76, 201, 240, 0.2);
+}
+
+.info-juego {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 500px;
+  margin: 20px auto;
+  font-size: 1.2rem;
+  background-color: rgba(26, 26, 46, 0.7);
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(11, 104, 197, 0.2);
+}
+
+.controles-juego {
+  margin-top: 30px;
+  display: flex;
+  gap: 15px;
+}
+
+.btn-juego {
+  background: linear-gradient(
+    135deg,
+    var(--color-acento),
+    var(--color-secundario)
+  );
+  color: white;
+  padding: 12px 25px;
+  border: none;
+  border-radius: 50px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.btn-juego:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(76, 201, 240, 0.5);
+}
+
+.selector-nivel {
+  margin-bottom: 20px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.btn-nivel {
+  background: rgba(76, 201, 240, 0.2);
+  color: var(--color-texto);
+  padding: 8px 15px;
+  border: 1px solid var(--color-secundario);
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.btn-nivel:hover,
+.btn-nivel.activo {
+  background: linear-gradient(
+    135deg,
+    var(--color-acento),
+    var(--color-secundario)
+  );
+  color: white;
+}
+
+.btn-nivel.completado {
+  background: rgba(76, 201, 240, 0.5);
+  color: white;
+}
+
+/* Efecto de confeti al poner bien la pieza*/
+.confetti {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background-color: var(--color-secundario);
+  opacity: 0;
+  z-index: 10;
+  animation: confetti-fall 2s ease-out forwards;
+}
+
+@keyframes confetti-fall {
+  0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(300px) rotate(360deg);
+    opacity: 0;
+  }
+}
+/*Estilos página*/
+@media (max-width: 576px) {
+  .titulo-juego {
+    font-size: 2rem;
+  }
+
+  .pieza {
+    width: 70px;
+    height: 70px;
+  }
+
+  .info-juego {
+    font-size: 1rem;
+    padding: 10px;
+  }
+}
