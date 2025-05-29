@@ -77,6 +77,7 @@ function cargarPuntuaciones() {
 document.getElementById("simondice").addEventListener("click", function(){window.location.href='minijuegosimon.html'});
 document.getElementById("estrellas").addEventListener("click", function(){window.location.href='minijuegoestrellas.html'});
 document.getElementById("sentimientos").addEventListener("click", function(){window.location.href='minijuegosentimientos.html'});
+document.getElementById("puzle").addEventListener("click", function(){window.location.href='minijuegopuzle.html'});
 
 // Al cargar la página
 document.addEventListener("DOMContentLoaded", function () {
