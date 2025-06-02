@@ -3,7 +3,7 @@ let secuencia = [];
 let nivelActual = 1;
 let puntos = 0;
 let record = localStorage.getItem("simonRecord") || 0;
-let jugadorActual = localStorage.getItem('jugadorActual') || 'Jugador';
+let jugadorActual = localStorage.getItem('nombreJugador') || 'Jugador';
 let jugando = false;
 let indiceSecuencia = 0;
 let esperandoInput = false;
@@ -30,6 +30,13 @@ const sonidos = {
 
 // Inicializar el juego
 function init() {
+  // Verificar si hay un jugador registrado
+  if (!jugadorActual) {
+    alert("Por favor, ingresa tu nombre en la página principal primero.");
+    window.location.href = "index.html";
+    return;
+  }
+
   // Configurar record
   recordDisplay.textContent = record;
 
@@ -46,7 +53,15 @@ function init() {
 
 // Función para iniciar el juego
 function iniciarJuego() {
-  if (jugando) return;
+  if (jugando) {
+    // Reiniciar el juego si ya está en curso
+    terminarJuego();
+    setTimeout(() => {
+      jugando = false;
+      iniciarJuego();
+    }, 500);
+    return;
+  }
 
   jugando = true;
   secuencia = [];
@@ -154,96 +169,75 @@ function terminarJuego() {
   jugando = false;
   esperandoInput = false;
 
+  // Actualizar record si es necesario
   if (puntos > record) {
     record = puntos;
     localStorage.setItem("simonRecord", record);
     recordDisplay.textContent = record;
   }
 
-  // Guardar puntos temporalmente
-  localStorage.setItem("puntosTemporales", puntos);
-  localStorage.setItem("juegoOrigen", "simon");
-
   btnIniciar.disabled = false;
   nivelProgreso.style.width = "0%";
 
-  // Mostrar mensaje de felicitación
-  const mensaje = `¡Felicidades ${jugadorActual}!\n\nGanaste ${puntos} puntos.`;
+  // Mostrar mensaje de felicitación solo si se ganaron puntos
+  if (puntos > 0) {
+    const mensaje = `¡Felicidades ${jugadorActual}!\n\nGanaste ${puntos} puntos.`;
 
-  // Crear modal de felicitación
-  const modalHTML = `
-                <div class="modal fade" id="modalFelicitacion" tabindex="-1" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content" style="background-color: var(--color-primario); color: white; border: 2px solid var(--color-secundario);">
-                            <div class="modal-header" style="border-bottom: 1px solid var(--color-secundario);">
-                                <h5 class="modal-title" style="color: var(--color-secundario);">¡Juego completado!</h5>
-                                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body text-center">
-                                <i class="fas fa-trophy fa-4x mb-3" style="color: var(--color-secundario);"></i>
-                                <p>${mensaje}</p>
-                            </div>
-                            <div class="modal-footer" style="border-top: 1px solid var(--color-secundario);">
-                                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Aceptar</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            `;
+    // Crear modal de felicitación
+    const modalHTML = `
+      <div class="modal fade" id="modalFelicitacion" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content" style="background-color: var(--color-primario); color: white; border: 2px solid var(--color-secundario);">
+            <div class="modal-header" style="border-bottom: 1px solid var(--color-secundario);">
+              <h5 class="modal-title" style="color: var(--color-secundario);">¡Juego completado!</h5>
+              <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+              <i class="fas fa-trophy fa-4x mb-3" style="color: var(--color-secundario);"></i>
+              <p>${mensaje}</p>
+            </div>
+            <div class="modal-footer" style="border-top: 1px solid var(--color-secundario);">
+              <button type="button" class="btn btn-primary" id="btn-aceptar-puntos" data-bs-dismiss="modal">Aceptar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
 
-  document.body.insertAdjacentHTML("beforeend", modalHTML);
-  const modal = new bootstrap.Modal(document.getElementById("modalFelicitacion"));
-  modal.show();
+    document.body.insertAdjacentHTML("beforeend", modalHTML);
+    const modal = new bootstrap.Modal(document.getElementById("modalFelicitacion"));
+    modal.show();
 
-  // Eliminar el modal cuando se cierre
-  document
-    .getElementById("modalFelicitacion")
-    .addEventListener("hidden.bs.modal", function () {
+    // Configurar evento para cuando se cierre el modal
+    document.getElementById("modalFelicitacion").addEventListener("hidden.bs.modal", function() {
+      // Redirigir a la página principal con los puntos como parámetro
+      window.location.href = `eleccionminijuego.html?puntos=${puntos}&juego=simon`;
       this.remove();
     });
-}
 
-// Guardar puntuación en el sistema principal
-function guardarPuntuacion() {
-  const puntosGanados =
-    parseInt(localStorage.getItem("puntosTemporales")) || puntos;
-  let jugadores = JSON.parse(localStorage.getItem("jugadores")) || [];
-  const jugadorIndex = jugadores.findIndex((j) => j.nombre === jugadorActual);
-
-  if (jugadorIndex !== -1) {
-    jugadores[jugadorIndex].puntos += puntosGanados;
-  } else {
-    jugadores.push({
-      nombre: jugadorActual,
-      puntos: puntosGanados,
-      nivel: 1,
+    // También se puede aceptar directamente
+    document.getElementById("btn-aceptar-puntos").addEventListener("click", function() {
+      window.location.href = `eleccionminijuego.html?puntos=${puntos}&juego=simon`;
     });
   }
-
-  localStorage.setItem("jugadores", JSON.stringify(jugadores));
-  localStorage.removeItem("puntosTemporales"); // Limpiar después de usar
-  localStorage.removeItem("juegoOrigen");
 }
 
 // Volver al menú principal
 function volverAlMenu() {
   if (jugando) {
     if (!confirm("¿Estás seguro de que quieres salir? Perderás tu progreso.")) {
-      // Guardar puntuación antes de salir
-      if (puntos > 0) {
-        guardarPuntuacion();
-      }
       return;
     }
   }
-
-  window.location.href = "./eleccionminijuego.html";
+  
+  // Redirigir sin puntos si no se completó el juego
+  window.location.href = "eleccionminijuego.html";
 }
 
 // Crear efecto de estrellas
 function crearEstrellas() {
   const contenedor = document.querySelector(".contenedor-juego");
-  const cantidad = 50;
+  const cantidad = 100;
 
   for (let i = 0; i < cantidad; i++) {
     const estrella = document.createElement("div");

@@ -1,16 +1,13 @@
 // Función para redirigir después de ingresar el nombre
 document.getElementById("enviar").addEventListener("click",function () {
   const nombre = document.getElementById("nombreUsuario").value.trim();
-  localStorage.setItem('nombre', nombre);
-  const modal = bootstrap.Modal.getInstance(
-    document.getElementById("nombreModal")
-  );
+  localStorage.setItem('nombreJugador', nombre);
+  const modal = bootstrap.Modal.getInstance(document.getElementById("nombreModal"));
 
   if (nombre === "") {
     // Mostrar error si el campo está vacío
     document.getElementById("nombreUsuario").classList.add("is-invalid");
-    document.getElementById("nombreUsuario").nextElementSibling.textContent =
-      "Por favor ingresa tu nombre";
+    document.getElementById("nombreUsuario").nextElementSibling.textContent = "Por favor ingresa tu nombre";
     return;
   }
 
@@ -43,9 +40,7 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   // Limpiar el campo al mostrar el modal
-  document
-    .getElementById("nombreModal")
-    .addEventListener("show.bs.modal", function () {
+  document.getElementById("nombreModal").addEventListener("show.bs.modal", function () {
       document.getElementById("nombreUsuario").value = "";
       document.getElementById("nombreUsuario").focus();
     });

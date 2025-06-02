@@ -1,8 +1,8 @@
 // Variables del juego
 let nivelActual = 1;
 let piezasEncajadas = 0;
-let puntosAcumulados = parseInt(localStorage.getItem("puntosPuzzleEspacial")) || 0;
-let jugadorActual = localStorage.getItem("jugadorActual") || "Jugador";
+let puntosAcumulados = 0;
+let jugadorActual = localStorage.getItem('nombreJugador') || 'Jugador';
 let nivelesCompletados = JSON.parse(localStorage.getItem("nivelesCompletadosPuzzle")) || [];
 
 // Imágenes para los puzzles
@@ -160,8 +160,7 @@ function iniciarJuego() {
   tableroPuzzle.style.gridTemplateColumns = `repeat(${columnas}, 1fr)`;
 
   // Crear un array de índices barajados
-  const indicesBarajados = Array.from({length: piezasNivel.length}, (_, i) => i)
-    .sort(() => Math.random() - 0.5);
+  const indicesBarajados = Array.from({length: piezasNivel.length}, (_, i) => i).sort(() => Math.random() - 0.5);
 
   // Primero creamos todos los huecos en el tablero
   for (let i = 0; i < piezasNivel.length; i++) {
@@ -274,9 +273,6 @@ function completarNivel() {
   const puntosNivel = nivelActual * 50;
   puntosAcumulados += puntosNivel;
 
-  // Guardar en localStorage
-  localStorage.setItem("puntosPuzzleEspacial", puntosAcumulados);
-
   // Marcar nivel como completado si no lo estaba
   if (!nivelesCompletados.includes(nivelActual)) {
     nivelesCompletados.push(nivelActual);
@@ -342,15 +338,17 @@ function actualizarContadores() {
   document.getElementById("puntos-acumulados").textContent = puntosAcumulados;
 }
 
-// Volver al menú principal
 function volverAlMenu() {
+  // Si hay piezas encajadas, pedir confirmación
   if (piezasEncajadas > 0) {
-    if (!confirm("¿Estás seguro de que quieres salir? Perderás tu progreso en este nivel.")) {
+    const confirmarSalida = confirm("¿Estás seguro de que quieres salir?");
+    if (!confirmarSalida) {
       return;
     }
   }
-
-  window.location.href = "./eleccionminijuego.html";
+  
+  // Redirigir en cualquier caso (si no hay piezas encajadas o si confirma)
+  window.location.href = `eleccionminijuego.html?puntos=${puntosAcumulados}&juego=puzle`;
 }
 
 document.getElementById("btn-reiniciar").addEventListener("click", iniciarJuego);

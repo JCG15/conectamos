@@ -1,26 +1,6 @@
 // Almacenamiento de jugadores y puntuaciones
 let jugadores = JSON.parse(localStorage.getItem("jugadores")) || [];
-let jugadorActual = localStorage.getItem("nombre") || "";
-
-// Función para iniciar un juego
-/*function iniciarJuego(juego) {
-  if (!jugadorActual) {
-    alert("Por favor, ingresa tu nombre en la página principal primero.");
-    return;
-  }
-
-  // Actualizar puntuación del jugador
-  actualizarPuntuacion(jugadorActual, puntosGanados);
-
-  // Cerrar el modal
-  const modal = bootstrap.Modal.getInstance(
-    document.getElementById("modalMinijuegos")
-  );
-  modal.hide();
-
-  // Actualizar la tabla de puntuaciones
-  cargarPuntuaciones();
-}*/
+let nombreJugador = localStorage.getItem("nombreJugador") || "";
 
 // Función para actualizar la puntuación de un jugador
 function actualizarPuntuacion(nombre, puntos) {
@@ -41,9 +21,11 @@ function actualizarPuntuacion(nombre, puntos) {
   // Ordenar jugadores por puntos (descendente)
   jugadores.sort((a, b) => b.puntos - a.puntos);
 
-
   // Guardar en localStorage
   localStorage.setItem("jugadores", JSON.stringify(jugadores));
+  
+  // Actualizar la tabla de puntuaciones
+  cargarPuntuaciones();
 }
 
 // Función para cargar las puntuaciones en la tabla
@@ -56,7 +38,7 @@ function cargarPuntuaciones() {
 
   // Llenar la tabla
   jugadores.forEach((jugador, index) => {
-  const tr = document.createElement("tr");
+    const tr = document.createElement("tr");
 
     // Aplicar clases especiales a los primeros puestos
     let clasePuesto = "";
@@ -65,33 +47,59 @@ function cargarPuntuaciones() {
     else if (index === 2) clasePuesto = "puesto-3";
 
     tr.innerHTML = `
-                    <td class="${clasePuesto}">${index + 1}</td>
-                    <td class="${clasePuesto}">${jugador.nombre}</td>
-                    <td>${jugador.puntos}</td>
-                `;
+      <td class="${clasePuesto}">${index + 1}</td>
+      <td class="${clasePuesto}">${jugador.nombre}</td>
+      <td>${jugador.puntos}</td>
+    `;
 
     tbody.appendChild(tr);
   });
 }
 
-document.getElementById("simondice").addEventListener("click", function(){window.location.href='minijuegosimon.html'});
-document.getElementById("estrellas").addEventListener("click", function(){window.location.href='minijuegoestrellas.html'});
-document.getElementById("sentimientos").addEventListener("click", function(){window.location.href='minijuegosentimientos.html'});
-document.getElementById("puzle").addEventListener("click", function(){window.location.href='minijuegopuzle.html'});
+// Función para recibir puntos desde otros minijuegos
+function recibirPuntosDesdeMinijuego(puntos) {
+  if (nombreJugador && puntos) {
+    actualizarPuntuacion(nombreJugador, puntos);
+  }
+}
+
+// Event listeners para los minijuegos
+document.getElementById("simondice").addEventListener("click", function() {
+  window.location.href = 'minijuegosimon.html';
+});
+document.getElementById("estrellas").addEventListener("click", function() {
+  window.location.href = 'minijuegoestrellas.html';
+});
+document.getElementById("sentimientos").addEventListener("click", function() {
+  window.location.href = 'minijuegosentimientos.html';
+});
+document.getElementById("puzle").addEventListener("click", function() {
+  window.location.href = 'minijuegopuzle.html';
+});
 
 // Al cargar la página
 document.addEventListener("DOMContentLoaded", function () {
   // Verificar si hay un jugador actual
-  if (!jugadorActual) {
+  if (!nombreJugador) {
     // Redirigir a la página principal si no hay nombre
     alert("Por favor, ingresa tu nombre en la página principal primero.");
     window.location.href = "index.html";
     return;
+  }
+  
+  // Verificar si hay puntos para agregar (provenientes de un minijuego)
+  const urlParams = new URLSearchParams(window.location.search);
+  const puntosGanados = urlParams.get('puntos');
+  
+  if (puntosGanados) {
+    recibirPuntosDesdeMinijuego(parseInt(puntosGanados));
+    // Limpiar el parámetro de la URL
+    window.history.replaceState({}, document.title, window.location.pathname);
   }
 
   // Actualizar la tabla de puntuaciones
   cargarPuntuaciones();
 
   // Configurar el título con el nombre del jugador
-  document.querySelector(".titulo-nave").textContent += ` - ${jugadorActual}`;
+  document.querySelector(".titulo-nave").textContent += ` - ${nombreJugador}`;
 });

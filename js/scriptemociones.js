@@ -1,25 +1,3 @@
-// Sistema de puntuación estandarizado
-const SistemaPuntuacion = {
-  guardarResultado: function (puntos, juego) {
-    const resultado = {
-      juego: juego,
-      puntos: puntos,
-      timestamp: Date.now(),
-      jugador: localStorage.getItem("jugadorActual") || "Jugador",
-    };
-    localStorage.setItem("ultimoJuego", JSON.stringify(resultado));
-  },
-
-  obtenerUltimoResultado: function () {
-    const resultado = localStorage.getItem("ultimoJuego");
-    return resultado ? JSON.parse(resultado) : null;
-  },
-
-  limpiarResultado: function () {
-    localStorage.removeItem("ultimoJuego");
-  },
-};
-
 // Emociones disponibles
 const emociones = [
   { nombre: "Feliz", icono: "fa-smile", codigo: "😊" },
@@ -35,7 +13,7 @@ let preguntasTotales = 5;
 let preguntasRespondidas = 0;
 let puntosAcumulados = 0;
 let emocionCorrecta = null;
-let jugadorActual = localStorage.getItem("jugadorActual") || "Jugador";
+let jugadorActual = localStorage.getItem('nombreJugador') || 'Jugador';
 
 // DOM
 const emocionActualElement = document.getElementById("emocion-actual");
@@ -128,9 +106,6 @@ function verificarRespuesta(emocionSeleccionada) {
 
 // Completar nivel
 function completarNivel() {
-  // Guardar puntos temporalmente
-  SistemaPuntuacion.guardarResultado(puntosAcumulados, "quiz-cosmico");
-
   // Crear modal
   const modalHTML = `
                 <div class="modal fade modal-espacial" id="modalResultado" tabindex="-1" aria-hidden="true">
@@ -199,7 +174,7 @@ function completarNivel() {
   document.getElementById("btnVolverModal").addEventListener("click", () => {
     modal.hide();
     setTimeout(() => {
-      window.location.href = "./eleccionminijuego.html";
+      window.location.href = `eleccionminijuego.html?puntos=${puntosAcumulados}&juego=emociones`;
     }, 500);
   });
 
@@ -237,31 +212,37 @@ function crearEfectoConstelacion() {
 // Volver al menú
 function volverAlMenu() {
   if (preguntasRespondidas > 0 && preguntasRespondidas < preguntasTotales) {
-    if (!confirm("¿Estás seguro de que quieres salir? Perderás tu progreso.")) {
+    if (!confirm("¿Estás seguro de que quieres salir?")) {
       return;
     }
   }
-  window.location.href = "./eleccionminijuego.html";
+  window.location.href = `eleccionminijuego.html?puntos=${puntosAcumulados}&juego=emociones`;
 }
 
 // Crear fondo estelar
 function crearFondoEstelar() {
   const fondo = document.getElementById("fondoEstelar");
-  const cantidadEstrellas = window.innerWidth < 576 ? 50 : 80;
+  const cantidadEstrellas = 100;
 
   for (let i = 0; i < cantidadEstrellas; i++) {
-    const estrella = document.createElement("div");
-    estrella.className = "estrella-fondo";
+      const estrella = document.createElement("div");
+      estrella.className = "estrella-fondo";
 
-    const size = Math.random() * 3 + 1;
-    estrella.style.width = `${size}px`;
-    estrella.style.height = `${size}px`;
-    estrella.style.left = `${Math.random() * 100}%`;
-    estrella.style.top = `${Math.random() * 100}%`;
-    estrella.style.animationDelay = `${Math.random() * 5}s`;
-    estrella.style.animationDuration = `${Math.random() * 3 + 2}s`;
+      // Tamaño aleatorio
+      const size = Math.random() * 3 + 1;
+      estrella.style.width = `${size}px`;
+      estrella.style.height = `${size}px`;
 
-    fondo.appendChild(estrella);
+      // Posición aleatoria
+      estrella.style.left = `${Math.random() * 100}%`;
+      estrella.style.top = `${Math.random() * 100}%`;
+
+      // Opacidad y animación aleatoria
+      estrella.style.opacity = Math.random();
+      estrella.style.animationDelay = `${Math.random() * 2}s`;
+      estrella.style.animationDuration = `${Math.random() * 3 + 1}s`;
+
+      fondo.appendChild(estrella);
   }
 }
 
