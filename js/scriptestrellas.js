@@ -3,7 +3,7 @@ let cartasVolteadas = [];
 let parejasEncontradas = 0;
 let movimientos = 0;
 let bloqueo = false;
-let jugadorActual = localStorage.getItem("jugadorActual") || "Jugador";
+let jugadorActual = localStorage.getItem('nombreJugador') || 'Jugador';
 let juegoCompletado = false;
 
 // Colores disponibles para las estrellas (8 parejas)
@@ -89,10 +89,10 @@ function iniciarJuego() {
   });
 
   // Barajar las cartas
-  cartas = cartas.sort(() => Math.random() - 0.5);
+    cartas = cartas.sort(() => Math.random() - 0.5);
 
   // Crear las cartas en el tablero
-  cartas.forEach((carta, index) => {
+    cartas.forEach((carta, index) => {
     const elementoCarta = document.createElement("div");
     elementoCarta.className = "carta";
     elementoCarta.dataset.indice = index;
@@ -121,11 +121,7 @@ function iniciarJuego() {
 
 // Voltear una carta
 function voltearCarta() {
-  if (
-    bloqueo ||
-    this.classList.contains("volteada") ||
-    this.classList.contains("encontrada")
-  ) {
+  if (bloqueo || this.classList.contains("volteada") || this.classList.contains("encontrada")) {
     return;
   }
 
@@ -200,8 +196,7 @@ function verificarPareja() {
 
 // Actualizar los contadores de juego
 function actualizarContadores() {
-  document.getElementById("parejas-encontradas").textContent =
-    parejasEncontradas;
+  document.getElementById("parejas-encontradas").textContent = parejasEncontradas;
   document.getElementById("movimientos").textContent = movimientos;
 }
 
@@ -210,32 +205,10 @@ function finalizarJuego() {
   // Calcular puntos (menos movimientos = más puntos)
   const puntos = Math.max(150 - movimientos * 3, 10);
 
-  // Guardar puntos para mostrar en el menú principal
-  if (puntos > 0) {
-    const puntosGanados =
-      parseInt(localStorage.getItem("puntosTemporales")) || puntos;
-    let jugadores = JSON.parse(localStorage.getItem("jugadores")) || [];
-    const jugadorIndex = jugadores.findIndex((j) => j.nombre === jugadorActual);
-
-    if (jugadorIndex !== -1) {
-      jugadores[jugadorIndex].puntos += puntosGanados;
-    } else {
-      jugadores.push({
-        nombre: jugadorActual,
-        puntos: puntosGanados,
-        nivel: 1,
-      });
-    }
-
-    localStorage.setItem("jugadores", JSON.stringify(jugadores));
-    localStorage.removeItem("puntosTemporales"); // Limpiar después de usar
-    localStorage.removeItem("juegoOrigen");
-  }
-
   // Mostrar mensaje de felicitación
   const mensaje = `¡Felicidades ${jugadorActual}!\n\nEncontraste todas las parejas en ${movimientos} movimientos.\n\nGanaste ${puntos} puntos.`;
 
-  // Crear modal de felicitación dinámico
+  // Mdal de felicitación dinámico
   const modalHTML = `
                 <div class="modal fade" id="modalFelicitacion" tabindex="-1" aria-hidden="true">
                     <div class="modal-dialog">
@@ -249,7 +222,7 @@ function finalizarJuego() {
                                 <p>${mensaje}</p>
                             </div>
                             <div class="modal-footer" style="border-top: 1px solid var(--color-secundario);">
-                                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Aceptar</button>
+                                <button type="button" class="btn btn-primary" id="btn-aceptar-puntos" data-bs-dismiss="modal">Aceptar</button>
                             </div>
                         </div>
                     </div>
@@ -257,18 +230,22 @@ function finalizarJuego() {
             `;
 
   document.body.insertAdjacentHTML("beforeend", modalHTML);
-  const modal = new bootstrap.Modal(
-    document.getElementById("modalFelicitacion")
-  );
-  modal.show();
+    const modal = new bootstrap.Modal(document.getElementById("modalFelicitacion"));
+    modal.show();
 
-  // Eliminar el modal cuando se cierre
-  document
-    .getElementById("modalFelicitacion")
-    .addEventListener("hidden.bs.modal", function () {
+    // Configurar evento para cuando se cierre el modal
+    document.getElementById("modalFelicitacion").addEventListener("hidden.bs.modal", function() {
+      // Redirigir a la página principal con los puntos como parámetro
+      window.location.href = `eleccionminijuego.html?puntos=${puntos}&juego=estrellas`;
       this.remove();
     });
+
+    // También se puede aceptar directamente
+    document.getElementById("btn-aceptar-puntos").addEventListener("click", function() {
+      window.location.href = `eleccionminijuego.html?puntos=${puntos}&juego=estrellas`;
+    });
 }
+
 
 // Volver al menú principal
 function volverAlMenu() {
@@ -281,9 +258,7 @@ function volverAlMenu() {
   window.location.href = "./eleccionminijuego.html";
 }
 
-document
-  .getElementById("btn-reiniciar")
-  .addEventListener("click", iniciarJuego);
+document.getElementById("btn-reiniciar").addEventListener("click", iniciarJuego);
 document.getElementById("btn-volver").addEventListener("click", volverAlMenu);
 
 // Iniciar el juego al cargar
